@@ -1,0 +1,1293 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Damla'nın Öğrenme Macerası 🌟</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --coral: #FF6B6B;
+  --sky: #4ECDC4;
+  --sun: #FFE66D;
+  --lavender: #A78BFA;
+  --mint: #6BCB77;
+  --peach: #FF9F43;
+  --bg: #0F0E17;
+  --card: #1A1A2E;
+  --card2: #16213E;
+  --text: #FFFFFE;
+  --muted: #A7A9BE;
+  --radius: 24px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; min-height: 100vh; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* STARS BG */
+.stars-bg {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background: radial-gradient(ellipse at 20% 50%, rgba(167,139,250,0.08) 0%, transparent 60%),
+              radial-gradient(ellipse at 80% 20%, rgba(78,205,196,0.08) 0%, transparent 50%),
+              radial-gradient(ellipse at 60% 80%, rgba(255,107,107,0.06) 0%, transparent 50%);
+}
+.star {
+  position: absolute;
+  border-radius: 50%;
+  background: white;
+  animation: twinkle var(--d, 3s) ease-in-out infinite alternate;
+}
+@keyframes twinkle {
+  from { opacity: 0.1; transform: scale(0.8); }
+  to   { opacity: 0.9; transform: scale(1.2); }
+}
+
+/* SCREENS */
+.screen { display: none; animation: fadeIn 0.4s ease; }
+.screen.active { display: block; }
+@keyframes fadeIn { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+
+/* ===== HOME SCREEN ===== */
+#home {
+  min-height: 100vh;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 32px 20px;
+  position: relative; z-index: 1;
+}
+.home-title {
+  font-family: 'Fredoka One', cursive;
+  font-size: clamp(2.2rem, 8vw, 3.8rem);
+  text-align: center;
+  line-height: 1.1;
+  margin-bottom: 8px;
+  background: linear-gradient(135deg, #FFE66D, #FF9F43, #FF6B6B);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 30px rgba(255,159,67,0.4));
+}
+.home-sub {
+  font-size: 1.05rem;
+  color: var(--muted);
+  text-align: center;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.stars-display {
+  display: flex; align-items: center; gap: 6px;
+  background: rgba(255,230,109,0.12);
+  border: 2px solid rgba(255,230,109,0.25);
+  border-radius: 50px;
+  padding: 8px 20px;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--sun);
+  margin-bottom: 36px;
+}
+
+/* SUBJECT CARDS */
+.subjects-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  width: 100%; max-width: 480px;
+  margin-bottom: 24px;
+}
+.subject-btn {
+  background: var(--card);
+  border: 2px solid rgba(255,255,255,0.06);
+  border-radius: 20px;
+  padding: 24px 16px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  text-align: center;
+  position: relative; overflow: hidden;
+}
+.subject-btn::before {
+  content: '';
+  position: absolute; inset: 0;
+  opacity: 0; transition: opacity 0.3s;
+}
+.subject-btn:hover { transform: translateY(-4px) scale(1.02); }
+.subject-btn:hover::before { opacity: 1; }
+.subject-btn:active { transform: scale(0.97); }
+
+.sb-turkce { --c: #FF6B6B; }
+.sb-turkce::before { background: radial-gradient(circle at center, rgba(255,107,107,0.15), transparent 70%); }
+.sb-turkce:hover { border-color: #FF6B6B; box-shadow: 0 8px 32px rgba(255,107,107,0.25); }
+
+.sb-mat { --c: #4ECDC4; }
+.sb-mat::before { background: radial-gradient(circle at center, rgba(78,205,196,0.15), transparent 70%); }
+.sb-mat:hover { border-color: #4ECDC4; box-shadow: 0 8px 32px rgba(78,205,196,0.25); }
+
+.sb-hayat { --c: #6BCB77; }
+.sb-hayat::before { background: radial-gradient(circle at center, rgba(107,203,119,0.15), transparent 70%); }
+.sb-hayat:hover { border-color: #6BCB77; box-shadow: 0 8px 32px rgba(107,203,119,0.25); }
+
+.sb-dikkat { --c: #A78BFA; }
+.sb-dikkat::before { background: radial-gradient(circle at center, rgba(167,139,250,0.15), transparent 70%); }
+.sb-dikkat:hover { border-color: #A78BFA; box-shadow: 0 8px 32px rgba(167,139,250,0.25); }
+
+.sb-emoji { font-size: 2.4rem; }
+.sb-name {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.05rem;
+  color: var(--c);
+}
+.sb-count {
+  font-size: 11px; font-weight: 700;
+  color: var(--muted);
+  background: rgba(255,255,255,0.05);
+  padding: 3px 10px; border-radius: 50px;
+}
+.sb-stars {
+  font-size: 12px; color: var(--sun);
+  font-weight: 800;
+}
+.sb-done-badge {
+  position: absolute; top: 10px; right: 10px;
+  background: var(--mint); color: white;
+  font-size: 10px; font-weight: 800;
+  padding: 2px 8px; border-radius: 50px;
+  display: none;
+}
+
+/* ===== QUIZ SCREEN ===== */
+#quiz {
+  min-height: 100vh;
+  padding: 24px 20px;
+  max-width: 540px;
+  margin: 0 auto;
+  position: relative; z-index: 1;
+}
+
+.quiz-header {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 24px;
+}
+.back-btn {
+  background: rgba(255,255,255,0.08);
+  border: none; border-radius: 12px;
+  color: white; cursor: pointer;
+  width: 40px; height: 40px;
+  font-size: 1.2rem;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s;
+}
+.back-btn:hover { background: rgba(255,255,255,0.15); }
+
+.quiz-subject-name {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.2rem;
+}
+.quiz-progress-wrap {
+  flex: 1;
+  background: rgba(255,255,255,0.08);
+  border-radius: 50px; height: 8px;
+  overflow: hidden;
+}
+.quiz-progress-bar {
+  height: 100%; border-radius: 50px;
+  background: linear-gradient(90deg, var(--qcolor, #FF6B6B), rgba(255,255,255,0.6));
+  transition: width 0.4s ease;
+}
+.quiz-q-num {
+  font-size: 12px; font-weight: 800; color: var(--muted);
+  white-space: nowrap;
+}
+
+/* QUESTION CARD */
+.question-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 28px 24px;
+  margin-bottom: 20px;
+  border: 2px solid rgba(255,255,255,0.06);
+  position: relative; overflow: hidden;
+}
+.question-card::before {
+  content: '';
+  position: absolute; top: -40px; right: -40px;
+  width: 120px; height: 120px;
+  background: radial-gradient(circle, var(--qcolor, #FF6B6B) 0%, transparent 70%);
+  opacity: 0.12;
+  border-radius: 50%;
+}
+.q-type-badge {
+  font-size: 11px; font-weight: 800;
+  padding: 4px 12px; border-radius: 50px;
+  background: rgba(255,255,255,0.08);
+  color: var(--muted);
+  display: inline-block;
+  margin-bottom: 14px;
+}
+.q-emoji { font-size: 2.8rem; margin-bottom: 12px; display: block; }
+.q-text {
+  font-size: 1.15rem;
+  font-weight: 800;
+  line-height: 1.5;
+  color: var(--text);
+}
+.q-highlight {
+  color: var(--qcolor, #FF6B6B);
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.3em;
+}
+
+/* ANSWER OPTIONS */
+.options-grid {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.option-btn {
+  background: var(--card);
+  border: 2px solid rgba(255,255,255,0.1);
+  border-radius: 16px;
+  padding: 14px 18px;
+  color: var(--text);
+  font-family: 'Nunito', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: left;
+  display: flex; align-items: center; gap: 12px;
+}
+.option-btn:hover:not(:disabled) {
+  border-color: var(--qcolor, #FF6B6B);
+  background: rgba(255,255,255,0.05);
+  transform: translateX(4px);
+}
+.option-btn.correct {
+  background: rgba(107,203,119,0.15);
+  border-color: var(--mint);
+  color: var(--mint);
+  animation: correctPop 0.4s ease;
+}
+.option-btn.wrong {
+  background: rgba(255,107,107,0.12);
+  border-color: var(--coral);
+  color: var(--coral);
+  animation: shake 0.4s ease;
+}
+.option-letter {
+  width: 32px; height: 32px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.08);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 900;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+.option-btn.correct .option-letter { background: var(--mint); color: white; }
+.option-btn.wrong .option-letter { background: var(--coral); color: white; }
+
+/* INPUT TYPE */
+.q-input {
+  width: 100%;
+  background: rgba(255,255,255,0.06);
+  border: 2px solid rgba(255,255,255,0.12);
+  border-radius: 14px;
+  padding: 14px 18px;
+  color: var(--text);
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  outline: none;
+  transition: border-color 0.2s;
+  margin-bottom: 10px;
+}
+.q-input:focus { border-color: var(--qcolor, #FF6B6B); }
+.q-input.correct { border-color: var(--mint); background: rgba(107,203,119,0.1); }
+.q-input.wrong { border-color: var(--coral); background: rgba(255,107,107,0.1); }
+
+.submit-btn {
+  width: 100%;
+  padding: 14px;
+  border: none; border-radius: 14px;
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: var(--qcolor, #FF6B6B);
+  color: white;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+}
+.submit-btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
+.submit-btn:active { transform: scale(0.97); }
+.submit-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+/* FEEDBACK */
+.feedback-box {
+  background: rgba(255,255,255,0.04);
+  border-radius: 16px;
+  padding: 16px 18px;
+  margin-top: 12px;
+  display: none;
+  border-left: 3px solid var(--mint);
+}
+.feedback-box.show { display: block; animation: fadeIn 0.3s ease; }
+.feedback-box.wrong-fb { border-color: var(--coral); }
+.feedback-title { font-weight: 800; font-size: 1rem; margin-bottom: 4px; }
+.feedback-text { font-size: 0.9rem; color: var(--muted); font-weight: 600; line-height: 1.5; }
+
+.next-btn {
+  width: 100%;
+  padding: 16px;
+  border: none; border-radius: 16px;
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.15rem;
+  cursor: pointer;
+  margin-top: 12px;
+  background: linear-gradient(135deg, var(--qcolor, #FF6B6B), rgba(255,255,255,0.3));
+  color: white;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.3);
+  display: none;
+  transition: all 0.2s;
+}
+.next-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+.next-btn.show { display: block; animation: bounceIn 0.4s ease; }
+
+/* MATCHING GAME */
+.match-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.match-col { display: flex; flex-direction: column; gap: 8px; }
+.match-item {
+  background: var(--card);
+  border: 2px solid rgba(255,255,255,0.1);
+  border-radius: 14px;
+  padding: 12px 14px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+  text-align: center;
+  min-height: 52px;
+  display: flex; align-items: center; justify-content: center;
+}
+.match-item:hover:not(.matched):not(.selected-wrong) { border-color: var(--qcolor); background: rgba(255,255,255,0.05); }
+.match-item.selected { border-color: var(--qcolor); background: rgba(255,255,255,0.08); transform: scale(1.03); }
+.match-item.matched { border-color: var(--mint); background: rgba(107,203,119,0.12); color: var(--mint); cursor: default; }
+.match-item.selected-wrong { border-color: var(--coral); animation: shake 0.3s ease; }
+
+/* MEMORY GAME */
+.memory-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.mem-card {
+  aspect-ratio: 1;
+  background: var(--card2);
+  border: 2px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem;
+  transition: all 0.3s;
+  user-select: none;
+}
+.mem-card .front { display: none; }
+.mem-card .back { display: flex; }
+.mem-card.flipped { border-color: var(--qcolor); background: rgba(255,255,255,0.06); }
+.mem-card.flipped .front { display: flex; }
+.mem-card.flipped .back { display: none; }
+.mem-card.matched { border-color: var(--mint); background: rgba(107,203,119,0.12); }
+.mem-card.matched .front { display: flex; }
+.mem-card.matched .back { display: none; }
+
+/* ===== RESULT SCREEN ===== */
+#result {
+  min-height: 100vh;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 32px 20px;
+  text-align: center;
+  position: relative; z-index: 1;
+}
+.result-emoji { font-size: 5rem; margin-bottom: 16px; animation: bounceIn 0.6s ease; }
+.result-title {
+  font-family: 'Fredoka One', cursive;
+  font-size: 2rem;
+  margin-bottom: 8px;
+}
+.result-score {
+  font-size: 3.5rem;
+  font-family: 'Fredoka One', cursive;
+  color: var(--sun);
+  margin: 16px 0;
+  filter: drop-shadow(0 0 20px rgba(255,230,109,0.4));
+}
+.result-msg { color: var(--muted); font-weight: 700; margin-bottom: 28px; font-size: 1rem; line-height: 1.6; }
+.result-stars { font-size: 2rem; letter-spacing: 4px; margin-bottom: 24px; }
+
+.result-btns { display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 320px; }
+.result-btn {
+  padding: 16px; border: none; border-radius: 16px;
+  font-family: 'Fredoka One', cursive; font-size: 1.1rem;
+  cursor: pointer; transition: all 0.2s;
+}
+.result-btn-primary { background: linear-gradient(135deg, #FFE66D, #FF9F43); color: #1A1A2E; }
+.result-btn-secondary { background: rgba(255,255,255,0.08); color: white; border: 2px solid rgba(255,255,255,0.12); }
+.result-btn:hover { transform: translateY(-2px); }
+
+/* CONFETTI */
+.confetti-piece {
+  position: fixed;
+  width: 10px; height: 10px;
+  border-radius: 2px;
+  animation: confettiFall linear forwards;
+  z-index: 999; pointer-events: none;
+}
+@keyframes confettiFall {
+  0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+
+/* ANIMATIONS */
+@keyframes correctPop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.04); }
+  100% { transform: scale(1); }
+}
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
+}
+@keyframes bounceIn {
+  0% { transform: scale(0.7); opacity: 0; }
+  70% { transform: scale(1.08); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* DIRECTION GAME */
+.dir-map {
+  background: rgba(255,255,255,0.04);
+  border: 2px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 12px;
+  position: relative;
+  aspect-ratio: 1;
+  max-width: 240px;
+  margin-left: auto; margin-right: auto;
+}
+.dir-compass {
+  position: absolute; top: 8px; right: 8px;
+  background: rgba(0,0,0,0.3);
+  border-radius: 50%;
+  width: 48px; height: 48px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem;
+}
+.dir-grid {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  grid-template-rows: repeat(3,1fr);
+  width: 100%; height: 100%;
+  gap: 4px;
+}
+.dir-cell {
+  background: rgba(255,255,255,0.04);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+.dir-cell.highlight { background: rgba(107,203,119,0.2); border-color: var(--mint); }
+.dir-cell.start { background: rgba(255,230,109,0.2); border-color: var(--sun); }
+
+/* TRAFFIC SIGN */
+.traffic-sign {
+  display: inline-flex; flex-direction: column; align-items: center; gap: 4px;
+  padding: 12px 16px; border-radius: 12px;
+  font-weight: 800; font-size: 2.2rem;
+  margin: 0 auto 12px;
+  border: 3px solid;
+}
+.sign-red { background: rgba(255,107,107,0.15); border-color: var(--coral); }
+.sign-yellow { background: rgba(255,230,109,0.15); border-color: var(--sun); }
+.sign-blue { background: rgba(78,205,196,0.15); border-color: var(--sky); }
+.sign-green { background: rgba(107,203,119,0.15); border-color: var(--mint); }
+.sign-label { font-size: 11px; font-weight: 700; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; }
+
+/* WORD HIGHLIGHT */
+.word-blank {
+  display: inline-block;
+  background: rgba(255,255,255,0.1);
+  border-bottom: 3px solid var(--qcolor);
+  padding: 2px 16px;
+  border-radius: 4px;
+  min-width: 80px;
+  color: var(--qcolor);
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.1em;
+  text-align: center;
+}
+
+/* TOTAL STARS COUNTER */
+.floating-stars {
+  position: fixed; top: 16px; right: 16px;
+  background: rgba(255,230,109,0.15);
+  border: 2px solid rgba(255,230,109,0.3);
+  border-radius: 50px;
+  padding: 8px 14px;
+  font-weight: 800; font-size: 0.95rem;
+  color: var(--sun);
+  display: flex; align-items: center; gap: 6px;
+  z-index: 100;
+  backdrop-filter: blur(10px);
+}
+
+/* DIVISION VISUAL */
+.division-vis {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  justify-content: center;
+  margin: 12px 0;
+}
+.div-group {
+  display: flex; gap: 3px; flex-wrap: wrap;
+  padding: 6px; border: 2px dashed rgba(255,255,255,0.2);
+  border-radius: 10px;
+}
+.div-dot {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: var(--sky);
+}
+
+/* WORD PUZZLE */
+.word-letters {
+  display: flex; gap: 6px; flex-wrap: wrap; justify-content: center;
+  margin: 12px 0;
+}
+.letter-box {
+  width: 36px; height: 40px;
+  background: rgba(255,255,255,0.08);
+  border: 2px solid rgba(255,255,255,0.15);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.letter-box:hover { border-color: var(--qcolor); background: rgba(255,255,255,0.12); }
+.letter-box.selected { background: var(--qcolor); border-color: var(--qcolor); color: white; }
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+
+@media (max-width: 400px) {
+  .subjects-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .subject-btn { padding: 18px 10px; }
+  .sb-emoji { font-size: 2rem; }
+  .memory-grid { grid-template-columns: repeat(4,1fr); gap: 6px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Stars background -->
+<div class="stars-bg" id="starsBg"></div>
+
+<!-- Floating stars counter -->
+<div class="floating-stars" id="floatingStars">⭐ <span id="totalStarsDisplay">0</span></div>
+
+<!-- ============ HOME SCREEN ============ -->
+<div id="home" class="screen active">
+  <div class="home-title">Damla'nın<br>Macerası! 🚀</div>
+  <div class="home-sub">Hangi konuyu çalışmak istiyorsun?</div>
+  <div class="stars-display">⭐ <span id="homeStars">0</span> yıldız topladın!</div>
+
+  <div class="subjects-grid">
+    <button class="subject-btn sb-turkce" onclick="startSubject('turkce')">
+      <div class="sb-done-badge" id="done-turkce">✓ Tamam</div>
+      <div class="sb-emoji">📚</div>
+      <div class="sb-name">Türkçe</div>
+      <div class="sb-count">6 soru</div>
+      <div class="sb-stars" id="stars-turkce">⭐⭐⭐⭐⭐⭐</div>
+    </button>
+    <button class="subject-btn sb-mat" onclick="startSubject('mat')">
+      <div class="sb-done-badge" id="done-mat">✓ Tamam</div>
+      <div class="sb-emoji">🔢</div>
+      <div class="sb-name">Matematik</div>
+      <div class="sb-count">5 soru</div>
+      <div class="sb-stars" id="stars-mat">⭐⭐⭐⭐⭐</div>
+    </button>
+    <button class="subject-btn sb-hayat" onclick="startSubject('hayat')">
+      <div class="sb-done-badge" id="done-hayat">✓ Tamam</div>
+      <div class="sb-emoji">🗺️</div>
+      <div class="sb-name">Hayat Bilgisi</div>
+      <div class="sb-count">5 soru</div>
+      <div class="sb-stars" id="stars-hayat">⭐⭐⭐⭐⭐</div>
+    </button>
+    <button class="subject-btn sb-dikkat" onclick="startSubject('dikkat')">
+      <div class="sb-done-badge" id="done-dikkat">✓ Tamam</div>
+      <div class="sb-emoji">🧠</div>
+      <div class="sb-name">Dikkat</div>
+      <div class="sb-count">Hafıza oyunu</div>
+      <div class="sb-stars" id="stars-dikkat">⭐⭐⭐</div>
+    </button>
+  </div>
+</div>
+
+<!-- ============ QUIZ SCREEN ============ -->
+<div id="quiz" class="screen">
+  <div class="quiz-header">
+    <button class="back-btn" onclick="goHome()">←</button>
+    <div class="quiz-subject-name" id="quizSubjectName">Türkçe</div>
+    <div class="quiz-progress-wrap">
+      <div class="quiz-progress-bar" id="quizProgress" style="width:0%"></div>
+    </div>
+    <div class="quiz-q-num" id="quizQNum">1/6</div>
+  </div>
+
+  <div id="quizContent"></div>
+</div>
+
+<!-- ============ RESULT SCREEN ============ -->
+<div id="result" class="screen">
+  <div class="result-emoji" id="resultEmoji">🌟</div>
+  <div class="result-title" id="resultTitle">Süpersin!</div>
+  <div class="result-stars" id="resultStars">⭐⭐⭐</div>
+  <div class="result-score" id="resultScore">5/6</div>
+  <div class="result-msg" id="resultMsg">Çok güzel çalıştın!</div>
+  <div class="result-btns">
+    <button class="result-btn result-btn-primary" id="resultRetryBtn" onclick="retrySubject()">🔄 Tekrar Oyna</button>
+    <button class="result-btn result-btn-secondary" onclick="goHome()">🏠 Ana Sayfaya Dön</button>
+  </div>
+</div>
+
+<script>
+// ======= STATE =======
+let totalStars = parseInt(localStorage.getItem('damla_stars') || '0');
+let subjectStars = JSON.parse(localStorage.getItem('damla_subjectStars') || '{}');
+let subjectDone = JSON.parse(localStorage.getItem('damla_done') || '{}');
+let currentSubject = null;
+let currentQ = 0;
+let correctCount = 0;
+let questions = [];
+let qcolor = '#FF6B6B';
+
+// ======= QUESTIONS =======
+const allQuestions = {
+  turkce: [
+    {
+      type: 'mc',
+      badge: '🔍 Kelime Tahmini',
+      emoji: '📖',
+      text: 'Cümleyi oku: "Bahçedeki çiçekler <span class="q-highlight">solmuş</span>, artık renkleri kalmamıştı." — "Solmuş" kelimesi ne anlama gelir?',
+      options: ['Büyümüş', 'Canlılığını kaybetmiş', 'Parlak renklenmiş', 'Güzel açmış'],
+      correct: 1,
+      feedback: '✅ "Solmuş" = canlılığını, rengini kaybetmiş demek. Tebrikler!'
+    },
+    {
+      type: 'mc',
+      badge: '🔤 Eş Sesli Kelimeler',
+      emoji: '🎭',
+      text: '"<span class="q-highlight">Gül</span>mesem de gözlerim güldü." — Bu cümlede "gül" kelimesi kaç farklı anlamda kullanılmıştır?',
+      options: ['Sadece 1 anlamda', '2 farklı anlamda', '3 farklı anlamda', 'Anlamsız bir kelime'],
+      correct: 1,
+      feedback: '✅ "Gülmesem" = gülmek (sevinmek), "güldü" = gül çiçeği gibi açmak. İki farklı anlam!'
+    },
+    {
+      type: 'mc',
+      badge: '🔤 Eş Sesli Kelimeler',
+      emoji: '🌹',
+      text: '"Bahçede güzel bir <span class="q-highlight">gül</span> açmış." — Bu cümlede "gül" ne anlama gelir?',
+      options: ['Gülmek, sevinmek', 'Bir çiçek türü', 'Bir renk', 'Bir hayvan'],
+      correct: 1,
+      feedback: '✅ Burada "gül" = kırmızı, güzel bir çiçek. Eş sesli kelimelerde bağlama dikkat!'
+    },
+    {
+      type: 'mc',
+      badge: '✍️ Büyük Harf',
+      emoji: '✏️',
+      text: 'Hangi cümlede büyük harf kullanımı <span class="q-highlight">doğru</span>dur?',
+      options: [
+        'annem ankara\'ya gitti.',
+        'Annem Ankara\'ya gitti.',
+        'Annem ankara\'ya gitti.',
+        'annem Ankara\'ya Gitti.'
+      ],
+      correct: 1,
+      feedback: '✅ Cümle başı ve özel isimler (Ankara) büyük harfle yazılır!'
+    },
+    {
+      type: 'mc',
+      badge: '🔹 Noktalama İşareti',
+      emoji: '❓',
+      text: '"Bugün hava çok güzel<span class="q-highlight">___</span>" — Boşluğa hangi noktalama işareti gelmelidir?',
+      options: ['? (soru işareti)', '! (ünlem)', '. (nokta)', ', (virgül)'],
+      correct: 2,
+      feedback: '✅ Bildirim cümlesi olduğu için nokta (.) gelir. Soru sorsaydık ? gelirdi!'
+    },
+    {
+      type: 'match',
+      badge: '🔤 Eş Sesli Eşleştirme',
+      emoji: '🎯',
+      text: 'Soldaki eş sesli kelimeleri sağdaki doğru anlamlarıyla eşleştir!',
+      pairs: [
+        { left: '🍁 Yaprak (kâğıt)', right: 'Defterimin yaprakları yırtıldı.' },
+        { left: '🌿 Yaprak (bitki)', right: 'Ağacın yaprakları döküldü.' },
+        { left: '🔒 Kır (doğa)', right: 'Kırda piknik yaptık.' },
+        { left: '💥 Kır (parçala)', right: 'Camı kırma!' },
+      ],
+      feedback: '✅ Harika! Eş sesli kelimeler aynı yazılır ama anlamları farklıdır.'
+    },
+  ],
+
+  mat: [
+    {
+      type: 'mc',
+      badge: '➗ Eksik Terim',
+      emoji: '🔢',
+      text: '<span class="q-highlight">□ ÷ 4 = 3</span> — Kutucuğa hangi sayı gelmelidir?',
+      options: ['7', '12', '8', '16'],
+      correct: 1,
+      feedback: '✅ 3 × 4 = 12. Bölme işleminde eksik terimi bulmak için çarpıyoruz!'
+    },
+    {
+      type: 'mc',
+      badge: '➗ Eksik Terim',
+      emoji: '🔢',
+      text: '<span class="q-highlight">20 ÷ □ = 5</span> — Kutucuğa hangi sayı gelmelidir?',
+      options: ['3', '4', '5', '6'],
+      correct: 1,
+      feedback: '✅ 20 ÷ 5 = 4. 4 × 5 = 20 olduğunu kontrol edebilirsin!'
+    },
+    {
+      type: 'visual',
+      badge: '➗ Görsel Bölme',
+      emoji: '🍎',
+      text: '12 elmayı 3 kişiye eşit paylaştırıyoruz. Her kişiye kaç elma düşer? <span class="q-highlight">12 ÷ 3 = □</span>',
+      visual: 'division',
+      divTotal: 12, divGroup: 3,
+      options: ['3', '4', '6', '5'],
+      correct: 1,
+      feedback: '✅ 12 ÷ 3 = 4. Her grupta 4 elma var!'
+    },
+    {
+      type: 'mc',
+      badge: '➗ Eksik Terim',
+      emoji: '🔢',
+      text: '<span class="q-highlight">□ ÷ 6 = 4</span> — Kutucuğa hangi sayı gelmelidir?',
+      options: ['20', '24', '18', '28'],
+      correct: 1,
+      feedback: '✅ 4 × 6 = 24. Her zaman "bölüm × bölen = bölünen" formülünü kullan!'
+    },
+    {
+      type: 'mc',
+      badge: '➗ Gerçek Hayat',
+      emoji: '🛒',
+      text: 'Marketçi 18 portakalı eşit olarak 9 çantaya koyuyor. <span class="q-highlight">Her çantaya kaç portakal düşer?</span>',
+      options: ['2', '3', '9', '4'],
+      correct: 0,
+      feedback: '✅ 18 ÷ 9 = 2. Her çantaya 2 portakal düşer!'
+    },
+  ],
+
+  hayat: [
+    {
+      type: 'mc',
+      badge: '🧭 Yön Bilgisi',
+      emoji: '🗺️',
+      text: 'Sabah güneş doğudan doğar. Sabah güneşe baktığında <span class="q-highlight">sağın</span> hangi yönü gösterir?',
+      options: ['Kuzey', 'Güney', 'Batı', 'Doğu'],
+      correct: 1,
+      feedback: '✅ Güneşe döndüğünde: sağın Güney, solun Kuzey, önün Doğu, arkan Batı!'
+    },
+    {
+      type: 'mc',
+      badge: '🧭 Kroki',
+      emoji: '🏠',
+      text: 'Bir krokide "K" harfi hangi yönü gösterir?',
+      options: ['Güney', 'Batı', 'Kuzey', 'Doğu'],
+      correct: 2,
+      feedback: '✅ K = Kuzey, G = Güney, D = Doğu, B = Batı. Kolayca hatırla: K-G-D-B!'
+    },
+    {
+      type: 'traffic',
+      badge: '🚦 Trafik İşareti',
+      emoji: '🚗',
+      text: 'Bu trafik işareti ne anlama gelir?',
+      sign: { emoji: '⛔', color: 'sign-red', label: 'KIRMIZI ÇEMBERLİ' },
+      options: ['Geç önceliğin var', 'Girilmez / Yasak', 'Dur ve bekle', 'Hız sınırı yok'],
+      correct: 1,
+      feedback: '✅ Kırmızı çemberli ve çizgili işaret = Girilmez / Geçiş yasak!'
+    },
+    {
+      type: 'traffic',
+      badge: '🚦 Trafik İşareti',
+      emoji: '🚗',
+      text: 'Üçgen şeklindeki sarı-siyah işaretler ne anlama gelir?',
+      sign: { emoji: '⚠️', color: 'sign-yellow', label: 'UYARI İŞARETİ' },
+      options: ['Yavaşla, tehlike var', 'Park edebilirsin', 'Hız yapabilirsin', 'Dur, geçme'],
+      correct: 0,
+      feedback: '✅ Üçgen sarı işaretler = Uyarı işaretleri. Dikkatli ol, tehlike olabilir!'
+    },
+    {
+      type: 'mc',
+      badge: '🧭 Tarif',
+      emoji: '🚶',
+      text: 'Haritaya göre: Başlangıç noktasından <span class="q-highlight">2 adım Kuzey</span>, sonra <span class="q-highlight">1 adım Doğu</span> gidersen nereye ulaşırsın?',
+      visual: 'direction',
+      options: ['Parka', 'Markete', 'Okula', 'Eve'],
+      correct: 2,
+      feedback: '✅ 2 adım Kuzey + 1 adım Doğu = Okul! Kroki okurken adımları say.'
+    },
+  ],
+
+  dikkat: [
+    {
+      type: 'memory',
+      badge: '🧠 Hafıza Oyunu',
+      emoji: '🃏',
+      text: 'Kartları çevir ve eşleştir! Aynı iki kartı bul.',
+      pairs: ['🦁','🐘','🦋','🌟','🍎','🚀','🎈','🌈'],
+      feedback: '✅ Tüm eşleri buldun! Hafızan çok güçlü!'
+    }
+  ]
+};
+
+const subjectConfig = {
+  turkce: { name: 'Türkçe', color: '#FF6B6B', emoji: '📚' },
+  mat: { name: 'Matematik', color: '#4ECDC4', emoji: '🔢' },
+  hayat: { name: 'Hayat Bilgisi', color: '#6BCB77', emoji: '🗺️' },
+  dikkat: { name: 'Dikkat Oyunu', color: '#A78BFA', emoji: '🧠' },
+};
+
+// ======= INIT =======
+function init() {
+  // Make stars
+  const bg = document.getElementById('starsBg');
+  for (let i = 0; i < 60; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    const sz = Math.random() * 3 + 1;
+    s.style.cssText = `width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${2+Math.random()*4}s;animation-delay:${Math.random()*4}s`;
+    bg.appendChild(s);
+  }
+  updateStarsUI();
+}
+
+function updateStarsUI() {
+  document.getElementById('totalStarsDisplay').textContent = totalStars;
+  document.getElementById('homeStars').textContent = totalStars;
+  // Update subject badges
+  ['turkce','mat','hayat','dikkat'].forEach(s => {
+    const earned = subjectStars[s] || 0;
+    const total = allQuestions[s].length;
+    const starsEl = document.getElementById('stars-' + s);
+    if (starsEl) starsEl.textContent = '⭐'.repeat(earned) + '☆'.repeat(Math.max(0, total - earned));
+    if (subjectDone[s]) {
+      const badge = document.getElementById('done-' + s);
+      if (badge) badge.style.display = 'block';
+    }
+  });
+}
+
+// ======= NAVIGATION =======
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function goHome() {
+  showScreen('home');
+  updateStarsUI();
+}
+
+function startSubject(subject) {
+  currentSubject = subject;
+  currentQ = 0;
+  correctCount = 0;
+  questions = [...allQuestions[subject]];
+  const cfg = subjectConfig[subject];
+  qcolor = cfg.color;
+  document.documentElement.style.setProperty('--qcolor', qcolor);
+  document.getElementById('quizSubjectName').textContent = cfg.emoji + ' ' + cfg.name;
+  document.getElementById('quizSubjectName').style.color = qcolor;
+  document.querySelector('.quiz-progress-bar').style.background = `linear-gradient(90deg, ${qcolor}, rgba(255,255,255,0.5))`;
+  showScreen('quiz');
+  renderQuestion();
+}
+
+function retrySubject() { startSubject(currentSubject); }
+
+// ======= RENDER QUESTION =======
+function renderQuestion() {
+  const q = questions[currentQ];
+  const total = questions.length;
+  document.getElementById('quizProgress').style.width = (currentQ / total * 100) + '%';
+  document.getElementById('quizQNum').textContent = `${currentQ+1}/${total}`;
+
+  let html = '';
+
+  if (q.type === 'memory') {
+    html = renderMemory(q);
+  } else if (q.type === 'match') {
+    html = renderMatch(q);
+  } else {
+    // Question card
+    let visualHtml = '';
+    if (q.visual === 'division') {
+      visualHtml = renderDivisionVisual(q.divTotal, q.divGroup);
+    }
+
+    let signHtml = '';
+    if (q.type === 'traffic' && q.sign) {
+      signHtml = `<div style="text-align:center"><div class="traffic-sign ${q.sign.color}">
+        <span>${q.sign.emoji}</span>
+        <span class="sign-label">${q.sign.label}</span>
+      </div></div>`;
+    }
+
+    html = `
+      <div class="question-card">
+        <div class="q-type-badge">${q.badge}</div>
+        <div class="q-emoji">${q.emoji}</div>
+        ${signHtml}
+        <div class="q-text">${q.text}</div>
+        ${visualHtml}
+      </div>
+      <div class="options-grid" id="optionsGrid">
+        ${q.options.map((opt, i) => `
+          <button class="option-btn" onclick="selectOption(${i})" id="opt${i}">
+            <div class="option-letter">${['A','B','C','D'][i]}</div>
+            ${opt}
+          </button>
+        `).join('')}
+      </div>
+      <div class="feedback-box" id="feedbackBox">
+        <div class="feedback-title" id="fbTitle"></div>
+        <div class="feedback-text" id="fbText"></div>
+      </div>
+      <button class="next-btn" id="nextBtn" onclick="nextQuestion()">
+        ${currentQ < questions.length - 1 ? 'Sonraki Soru →' : '🌟 Sonucu Gör!'}
+      </button>
+    `;
+  }
+
+  document.getElementById('quizContent').innerHTML = html;
+
+  if (q.type === 'memory') initMemory(q);
+  if (q.type === 'match') initMatch(q);
+}
+
+function renderDivisionVisual(total, groups) {
+  const perGroup = total / groups;
+  let html = '<div class="division-vis">';
+  for (let g = 0; g < groups; g++) {
+    html += '<div class="div-group">';
+    for (let d = 0; d < perGroup; d++) {
+      html += '<div class="div-dot"></div>';
+    }
+    html += '</div>';
+    if (g < groups - 1) html += '<span style="color:var(--muted);font-weight:800">|</span>';
+  }
+  html += '</div>';
+  return html;
+}
+
+function selectOption(idx) {
+  const q = questions[currentQ];
+  const btns = document.querySelectorAll('.option-btn');
+  btns.forEach(b => b.disabled = true);
+
+  const isCorrect = idx === q.correct;
+  btns[idx].classList.add(isCorrect ? 'correct' : 'wrong');
+  if (!isCorrect) btns[q.correct].classList.add('correct');
+
+  const fb = document.getElementById('feedbackBox');
+  const fbTitle = document.getElementById('fbTitle');
+  const fbText = document.getElementById('fbText');
+
+  if (isCorrect) {
+    correctCount++;
+    fbTitle.textContent = '🎉 Doğru!';
+    fb.classList.remove('wrong-fb');
+    playCorrectAnim();
+  } else {
+    fbTitle.textContent = '😅 Neredeyse!';
+    fb.classList.add('wrong-fb');
+  }
+  fbText.textContent = q.feedback;
+  fb.classList.add('show');
+  document.getElementById('nextBtn').classList.add('show');
+}
+
+function nextQuestion() {
+  currentQ++;
+  if (currentQ >= questions.length) {
+    showResult();
+  } else {
+    renderQuestion();
+  }
+}
+
+// ======= MATCH GAME =======
+let matchSelected = null;
+let matchDone = 0;
+
+function renderMatch(q) {
+  const leftPairs = q.pairs.map(p => p.left);
+  const rightPairs = q.pairs.map(p => p.right);
+  // Shuffle right
+  const shuffled = [...rightPairs].sort(() => Math.random() - 0.5);
+
+  return `
+    <div class="question-card">
+      <div class="q-type-badge">${q.badge}</div>
+      <div class="q-emoji">${q.emoji}</div>
+      <div class="q-text">${q.text}</div>
+    </div>
+    <div class="match-grid">
+      <div class="match-col" id="matchLeft">
+        ${leftPairs.map((p,i) => `<div class="match-item" data-idx="${i}" data-side="left" onclick="matchClick(this)">${p}</div>`).join('')}
+      </div>
+      <div class="match-col" id="matchRight">
+        ${shuffled.map((p,i) => `<div class="match-item" data-val="${p}" data-side="right" onclick="matchClick(this)">${p}</div>`).join('')}
+      </div>
+    </div>
+    <div class="feedback-box" id="feedbackBox">
+      <div class="feedback-title" id="fbTitle"></div>
+      <div class="feedback-text" id="fbText"></div>
+    </div>
+    <button class="next-btn" id="nextBtn" onclick="nextQuestion()">
+      ${currentQ < questions.length - 1 ? 'Sonraki Soru →' : '🌟 Sonucu Gör!'}
+    </button>
+  `;
+}
+
+function initMatch(q) {
+  matchSelected = null;
+  matchDone = 0;
+  window._matchPairs = q.pairs;
+  window._matchQ = q;
+}
+
+function matchClick(el) {
+  if (el.classList.contains('matched')) return;
+  const side = el.dataset.side;
+  if (!matchSelected) {
+    if (side === 'left') {
+      document.querySelectorAll('.match-item').forEach(e => e.classList.remove('selected'));
+      el.classList.add('selected');
+      matchSelected = el;
+    }
+  } else {
+    if (side === 'right') {
+      const leftIdx = parseInt(matchSelected.dataset.idx);
+      const correctRight = window._matchPairs[leftIdx].right;
+      const selectedVal = el.dataset.val;
+      if (selectedVal === correctRight) {
+        matchSelected.classList.remove('selected');
+        matchSelected.classList.add('matched');
+        el.classList.add('matched');
+        matchDone++;
+        matchSelected = null;
+        if (matchDone === window._matchPairs.length) {
+          correctCount++;
+          const fb = document.getElementById('feedbackBox');
+          document.getElementById('fbTitle').textContent = '🎉 Tüm eşleri buldun!';
+          document.getElementById('fbText').textContent = window._matchQ.feedback;
+          fb.classList.add('show');
+          document.getElementById('nextBtn').classList.add('show');
+          playCorrectAnim();
+        }
+      } else {
+        el.classList.add('selected-wrong');
+        matchSelected.classList.add('selected-wrong');
+        setTimeout(() => {
+          el.classList.remove('selected-wrong', 'selected');
+          matchSelected.classList.remove('selected-wrong', 'selected');
+          matchSelected = null;
+        }, 600);
+      }
+    } else {
+      document.querySelectorAll('.match-item').forEach(e => e.classList.remove('selected'));
+      el.classList.add('selected');
+      matchSelected = el;
+    }
+  }
+}
+
+// ======= MEMORY GAME =======
+let memFlipped = [];
+let memMatched = 0;
+let memLocked = false;
+let memMoves = 0;
+
+function renderMemory(q) {
+  return `
+    <div class="question-card">
+      <div class="q-type-badge">${q.badge}</div>
+      <div class="q-emoji">${q.emoji}</div>
+      <div class="q-text">${q.text}</div>
+      <div style="display:flex;justify-content:space-between;margin-top:12px">
+        <span style="color:var(--muted);font-size:13px;font-weight:700">Hamle: <span id="memMoves">0</span></span>
+        <span style="color:var(--mint);font-size:13px;font-weight:700">Eşleşme: <span id="memMatchCount">0</span>/${q.pairs.length}</span>
+      </div>
+    </div>
+    <div class="memory-grid" id="memGrid"></div>
+    <div class="feedback-box" id="feedbackBox">
+      <div class="feedback-title" id="fbTitle"></div>
+      <div class="feedback-text" id="fbText"></div>
+    </div>
+    <button class="next-btn" id="nextBtn" onclick="nextQuestion()">🌟 Sonucu Gör!</button>
+  `;
+}
+
+function initMemory(q) {
+  memFlipped = []; memMatched = 0; memLocked = false; memMoves = 0;
+  const pairs = [...q.pairs, ...q.pairs].sort(() => Math.random() - 0.5);
+  const grid = document.getElementById('memGrid');
+  grid.innerHTML = pairs.map((p,i) => `
+    <div class="mem-card" data-val="${p}" data-idx="${i}" onclick="memClick(this)">
+      <div class="front">${p}</div>
+      <div class="back" style="font-size:1.4rem;color:var(--qcolor)">?</div>
+    </div>
+  `).join('');
+  window._memQ = q;
+}
+
+function memClick(card) {
+  if (memLocked || card.classList.contains('flipped') || card.classList.contains('matched')) return;
+  card.classList.add('flipped');
+  memFlipped.push(card);
+  if (memFlipped.length === 2) {
+    memLocked = true;
+    memMoves++;
+    document.getElementById('memMoves').textContent = memMoves;
+    const [a, b] = memFlipped;
+    if (a.dataset.val === b.dataset.val) {
+      a.classList.add('matched'); b.classList.add('matched');
+      memMatched++;
+      document.getElementById('memMatchCount').textContent = memMatched;
+      memFlipped = []; memLocked = false;
+      if (memMatched === window._memQ.pairs.length) {
+        correctCount++;
+        const fb = document.getElementById('feedbackBox');
+        document.getElementById('fbTitle').textContent = '🎉 Tüm eşleri buldun!';
+        document.getElementById('fbText').textContent = `${memMoves} hamlede tamamladın! ` + window._memQ.feedback;
+        fb.classList.add('show');
+        document.getElementById('nextBtn').classList.add('show');
+        playCorrectAnim();
+      }
+    } else {
+      setTimeout(() => {
+        a.classList.remove('flipped'); b.classList.remove('flipped');
+        memFlipped = []; memLocked = false;
+      }, 900);
+    }
+  }
+}
+
+// ======= RESULT =======
+function showResult() {
+  const total = questions.length;
+  const pct = correctCount / total;
+  let emoji, title, msg;
+
+  if (pct === 1) {
+    emoji = '🏆'; title = 'Mükemmel!'; msg = 'Tüm soruları doğru yaptın!\nSen gerçekten bir süpersin! 🌟';
+  } else if (pct >= 0.7) {
+    emoji = '🌟'; title = 'Çok İyi!'; msg = 'Harika gidiyorsun!\nBiraz daha pratikle mükemmel olacaksın!';
+  } else if (pct >= 0.5) {
+    emoji = '💪'; title = 'İyi Deneme!'; msg = 'Güzel çalışma!\nBiraz daha tekrar yapalım, olur mu?';
+  } else {
+    emoji = '🌱'; title = 'Devam Et!'; msg = 'Bu konuyu birlikte pratik yapalım.\nTekrar denersen daha iyi olacak!';
+  }
+
+  const starsEarned = Math.round(pct * total);
+
+  // Save progress
+  const prev = subjectStars[currentSubject] || 0;
+  if (starsEarned > prev) {
+    const diff = starsEarned - prev;
+    totalStars += diff;
+    subjectStars[currentSubject] = starsEarned;
+    localStorage.setItem('damla_stars', totalStars);
+    localStorage.setItem('damla_subjectStars', JSON.stringify(subjectStars));
+  }
+  if (pct >= 0.7) {
+    subjectDone[currentSubject] = true;
+    localStorage.setItem('damla_done', JSON.stringify(subjectDone));
+  }
+
+  document.getElementById('resultEmoji').textContent = emoji;
+  document.getElementById('resultTitle').textContent = title;
+  document.getElementById('resultScore').textContent = `${correctCount}/${total}`;
+  document.getElementById('resultMsg').textContent = msg;
+  document.getElementById('resultStars').textContent = '⭐'.repeat(starsEarned) + '☆'.repeat(total - starsEarned);
+  document.getElementById('totalStarsDisplay').textContent = totalStars;
+
+  showScreen('result');
+  if (pct >= 0.7) confetti();
+}
+
+// ======= FX =======
+function playCorrectAnim() {
+  for (let i = 0; i < 8; i++) {
+    const p = document.createElement('div');
+    p.className = 'confetti-piece';
+    const colors = ['#FF6B6B','#FFE66D','#4ECDC4','#A78BFA','#6BCB77','#FF9F43'];
+    p.style.cssText = `
+      left:${20+Math.random()*60}%;
+      top:-10px;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      width:${6+Math.random()*6}px;
+      height:${6+Math.random()*6}px;
+      animation-duration:${0.8+Math.random()*0.5}s;
+      animation-delay:${Math.random()*0.3}s;
+    `;
+    document.body.appendChild(p);
+    setTimeout(() => p.remove(), 1500);
+  }
+}
+
+function confetti() {
+  for (let i = 0; i < 60; i++) {
+    setTimeout(() => {
+      const p = document.createElement('div');
+      p.className = 'confetti-piece';
+      const colors = ['#FF6B6B','#FFE66D','#4ECDC4','#A78BFA','#6BCB77','#FF9F43'];
+      const size = 8 + Math.random() * 8;
+      p.style.cssText = `
+        left:${Math.random()*100}%;
+        top:-20px;
+        background:${colors[Math.floor(Math.random()*colors.length)]};
+        width:${size}px; height:${size}px;
+        border-radius:${Math.random()>0.5?'50%':'3px'};
+        animation-duration:${1.5+Math.random()*2}s;
+        animation-delay:${Math.random()*1.5}s;
+      `;
+      document.body.appendChild(p);
+      setTimeout(() => p.remove(), 4000);
+    }, i * 30);
+  }
+}
+
+init();
+</script>
+</body>
+</html>
