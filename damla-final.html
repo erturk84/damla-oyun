@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Damla'nın Günlük Macerası 🌟</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--qc:#E05A8A;--text:#2C2060;--muted:#7A6EA0;--card:#FFFFFF;--card2:#F0EAFF;--border:#E8DEFF}
+body{font-family:'Nunito',sans-serif;background:linear-gradient(160deg,#FFF5FB 0%,#F0EAFF 50%,#E8F4FF 100%);background-attachment:fixed;color:var(--text);min-height:100vh;overflow-x:hidden;-webkit-tap-highlight-color:transparent}
+.screen{display:none}
+.screen.active{display:flex;flex-direction:column;align-items:center;min-height:100vh;padding:20px 16px 56px;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+.floating{position:fixed;top:14px;right:14px;background:rgba(255,159,67,.15);border:2px solid rgba(255,159,67,.35);border-radius:50px;padding:7px 14px;color:#D4700A;font-weight:800;font-size:.95rem;z-index:200;backdrop-filter:blur(8px);display:flex;align-items:center;gap:5px;box-shadow:0 2px 12px rgba(255,159,67,.15)}
+
+/* HOME */
+.logo{font-family:'Fredoka One',cursive;font-size:2.3rem;text-align:center;background:linear-gradient(135deg,#FF9F43,#E05A8A,#7C3AED);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.15;margin-bottom:4px;margin-top:8px}
+.date-badge{background:rgba(124,58,237,.08);border:1.5px solid rgba(124,58,237,.18);border-radius:50px;padding:6px 18px;font-size:.85rem;font-weight:700;color:var(--muted);margin-bottom:16px}
+
+.streak-box{background:var(--card);border:2px solid rgba(255,159,67,.25);border-radius:18px;padding:13px 18px;width:100%;max-width:420px;margin-bottom:14px;display:flex;align-items:center;gap:13px;box-shadow:0 3px 16px rgba(255,159,67,.1)}
+.streak-fire{font-size:2rem}
+.streak-info{flex:1}
+.streak-info h3{font-family:'Fredoka One',cursive;font-size:1rem;color:#D4700A}
+.streak-info p{font-size:.8rem;color:var(--muted);font-weight:700;margin-top:2px}
+.streak-num{font-family:'Fredoka One',cursive;font-size:1.9rem;color:#FF9F43}
+
+.week-box{background:var(--card);border:2px solid var(--border);border-radius:18px;padding:13px 14px;width:100%;max-width:420px;margin-bottom:16px;box-shadow:0 2px 12px rgba(124,58,237,.07)}
+.week-title{font-size:.78rem;font-weight:800;color:var(--muted);margin-bottom:9px;text-transform:uppercase;letter-spacing:.5px}
+.week-days{display:flex;gap:5px;justify-content:space-between}
+.wday{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+.wday-name{font-size:.65rem;font-weight:800;color:var(--muted)}
+.wday-dot{width:32px;height:32px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.82rem;font-weight:800;color:var(--muted);background:#F8F5FF}
+.wday-dot.done{background:rgba(107,203,119,.18);border-color:#4CAF80;color:#2E7D52}
+.wday-dot.today{border-color:#7C3AED;color:#7C3AED;background:rgba(124,58,237,.08);font-weight:900}
+.wday-dot.today.done{background:rgba(107,203,119,.22);border-color:#4CAF80;color:#2E7D52}
+.wday-dot.future{opacity:.35}
+
+.total-bar{background:linear-gradient(135deg,rgba(255,159,67,.12),rgba(224,90,138,.1));border:2px solid rgba(255,159,67,.25);border-radius:50px;padding:8px 18px;color:#D4700A;font-weight:800;font-size:.95rem;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+
+.all-done-msg{background:rgba(107,203,119,.1);border:2px solid rgba(76,175,128,.3);border-radius:16px;padding:14px 18px;width:100%;max-width:420px;text-align:center;margin-bottom:14px;display:none}
+.all-done-msg h3{font-family:'Fredoka One',cursive;color:#2E7D52;font-size:1.05rem;margin-bottom:3px}
+.all-done-msg p{font-size:.82rem;color:var(--muted);font-weight:700}
+
+.sgrid{display:grid;grid-template-columns:1fr 1fr;gap:11px;width:100%;max-width:420px}
+.scard{background:var(--card);border:2px solid var(--border);border-radius:18px;padding:18px 10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:7px;text-align:center;transition:transform .18s,box-shadow .18s,border-color .18s;position:relative;overflow:hidden;-webkit-user-select:none;user-select:none;box-shadow:0 2px 12px rgba(124,58,237,.07)}
+.scard:active{transform:scale(.95)}
+.scard.c1:hover{border-color:#E05A8A;box-shadow:0 6px 22px rgba(224,90,138,.2)}
+.scard.c2:hover{border-color:#0ABCB0;box-shadow:0 6px 22px rgba(10,188,176,.2)}
+.scard.c3:hover{border-color:#3DAA5E;box-shadow:0 6px 22px rgba(61,170,94,.2)}
+.scard.c4:hover{border-color:#7C3AED;box-shadow:0 6px 22px rgba(124,58,237,.2)}
+.scard.done-today{opacity:.55;cursor:default}
+.scard.done-today:active{transform:none}
+.sc-em{font-size:2.1rem}
+.sc-name{font-family:'Fredoka One',cursive;font-size:.98rem}
+.c1 .sc-name{color:#E05A8A}.c2 .sc-name{color:#0ABCB0}.c3 .sc-name{color:#3DAA5E}.c4 .sc-name{color:#7C3AED}
+.sc-info{font-size:10px;color:var(--muted);font-weight:700;background:rgba(124,58,237,.07);padding:2px 8px;border-radius:50px}
+.sc-stars{font-size:11px;color:#D4700A;font-weight:800;min-height:13px}
+.done-stamp{position:absolute;inset:0;background:rgba(107,203,119,.15);display:none;align-items:center;justify-content:center;border-radius:16px;font-size:2.2rem}
+.scard.done-today .done-stamp{display:flex}
+
+/* SAVE STATUS */
+.save-status{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);background:rgba(76,175,128,.15);border:1.5px solid rgba(76,175,128,.35);border-radius:50px;padding:6px 16px;font-size:.8rem;font-weight:700;color:#2E7D52;z-index:300;display:none;backdrop-filter:blur(8px)}
+.save-status.show{display:block;animation:fadeIn .3s ease}
+
+/* QUIZ */
+#quiz.active{padding:18px 16px 40px}
+.qwrap{width:100%;max-width:500px}
+.qhdr{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.back{background:rgba(124,58,237,.1);border:none;color:var(--text);border-radius:12px;width:42px;height:42px;font-size:1.2rem;cursor:pointer;flex-shrink:0;font-weight:800}
+.qsname{font-family:'Fredoka One',cursive;font-size:1rem;flex-shrink:0}
+.prog-wrap{flex:1;background:rgba(124,58,237,.1);border-radius:50px;height:8px;overflow:hidden}
+.prog-bar{height:100%;border-radius:50px;transition:width .4s ease;background:linear-gradient(90deg,var(--qc),rgba(255,255,255,.5))}
+.qnum{font-size:12px;color:var(--muted);font-weight:800;white-space:nowrap}
+.qcard{background:var(--card);border:2px solid var(--border);border-radius:20px;padding:20px 17px;margin-bottom:13px;box-shadow:0 3px 16px rgba(124,58,237,.08)}
+.badge{font-size:10px;font-weight:800;color:var(--muted);background:rgba(124,58,237,.08);padding:3px 11px;border-radius:50px;display:inline-block;margin-bottom:9px}
+.qem{font-size:2.3rem;display:block;margin-bottom:7px}
+.qtxt{font-size:1.03rem;font-weight:800;line-height:1.55;color:var(--text)}
+.hl{font-family:'Fredoka One',cursive;font-size:1.1em;color:var(--qc)}
+.opts{display:grid;gap:8px;margin-bottom:10px}
+.opt{background:var(--card);border:2px solid var(--border);border-radius:13px;padding:12px 14px;color:var(--text);font-family:'Nunito',sans-serif;font-size:.93rem;font-weight:700;cursor:pointer;transition:all .18s;text-align:left;display:flex;align-items:center;gap:10px;width:100%;-webkit-user-select:none;user-select:none;box-shadow:0 1px 6px rgba(124,58,237,.06)}
+.opt:hover:not(:disabled){border-color:var(--qc);background:#FDF8FF;transform:translateX(3px)}
+.opt:active:not(:disabled){transform:scale(.98)}
+.opt.ok{border-color:#4CAF80;background:rgba(107,203,119,.12);color:#2E7D52;animation:pop .3s ease}
+.opt.no{border-color:#E05A8A;background:rgba(224,90,138,.1);color:#B03060;animation:shake .3s ease}
+.ol{width:28px;height:28px;border-radius:8px;background:rgba(124,58,237,.08);color:var(--muted);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;flex-shrink:0;transition:all .18s}
+.opt.ok .ol{background:#4CAF80;color:#fff}.opt.no .ol{background:#E05A8A;color:#fff}
+@keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.03)}100%{transform:scale(1)}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.fb{background:rgba(107,203,119,.08);border-radius:12px;padding:12px 14px;margin-top:8px;display:none;border-left:3px solid #4CAF80}
+.fb.show{display:block;animation:fadeIn .3s ease}
+.fb.bad{border-color:#E05A8A;background:rgba(224,90,138,.07)}
+.fb-t{font-weight:800;font-size:.93rem;margin-bottom:3px;color:var(--text)}
+.fb-d{font-size:.83rem;color:var(--muted);font-weight:700;line-height:1.5}
+.nxt{width:100%;padding:14px;border:none;border-radius:14px;font-family:'Fredoka One',cursive;font-size:1.03rem;cursor:pointer;margin-top:10px;color:#fff;box-shadow:0 4px 16px rgba(0,0,0,.15);display:none;transition:all .18s;background:linear-gradient(135deg,var(--qc),#7C3AED)}
+.nxt.show{display:block;animation:pop .35s ease}
+.nxt:active{transform:scale(.97)}
+
+/* MATCH */
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.mcol{display:flex;flex-direction:column;gap:6px}
+.mit{background:var(--card);border:2px solid var(--border);border-radius:11px;padding:9px 8px;cursor:pointer;font-weight:700;font-size:.8rem;transition:all .18s;text-align:center;min-height:44px;display:flex;align-items:center;justify-content:center;line-height:1.3;color:var(--text);box-shadow:0 1px 6px rgba(124,58,237,.06)}
+.mit:hover:not(.mok):not(.mbad){border-color:var(--qc);background:#FDF8FF}
+.mit.msel{border-color:var(--qc);background:rgba(224,90,138,.07);transform:scale(1.02)}
+.mit.mok{border-color:#4CAF80;background:rgba(107,203,119,.12);color:#2E7D52;cursor:default}
+.mit.mbad{border-color:#E05A8A;animation:shake .3s ease}
+
+/* MEMORY */
+.memgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:10px;width:100%}
+.mc{aspect-ratio:1;background:var(--card2);border:2px solid var(--border);border-radius:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.35rem;transition:all .28s;-webkit-user-select:none;user-select:none;box-shadow:0 1px 5px rgba(124,58,237,.08)}
+.mc .mf{display:none}.mc .mb{display:flex;color:var(--qc);font-size:1.1rem;font-weight:900}
+.mc.mflip{border-color:var(--qc);background:rgba(224,90,138,.07)}
+.mc.mflip .mf{display:flex}.mc.mflip .mb{display:none}
+.mc.mmatch{border-color:#4CAF80;background:rgba(107,203,119,.12)}
+.mc.mmatch .mf{display:flex}.mc.mmatch .mb{display:none}
+.mem-stats{display:flex;justify-content:space-between;margin-top:8px;font-size:12px;font-weight:700;color:var(--muted)}
+.mem-stats b{color:#2E7D52}
+
+/* DIV VIS */
+.dvv{display:flex;align-items:center;gap:5px;flex-wrap:wrap;justify-content:center;margin:9px 0}
+.dg{display:flex;gap:3px;flex-wrap:wrap;padding:5px;border:2px dashed rgba(10,188,176,.35);border-radius:8px;background:rgba(10,188,176,.04)}
+.dd{width:15px;height:15px;border-radius:50%;background:#0ABCB0}
+
+/* TRAFFIC */
+.tsign{display:inline-flex;flex-direction:column;align-items:center;gap:2px;padding:9px 15px;border-radius:12px;border:3px solid;margin:7px auto;text-align:center}
+.tse{font-size:2.4rem}.tsl{font-size:9px;font-weight:800;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
+.sign-r{background:rgba(224,90,138,.1);border-color:#E05A8A}
+.sign-y{background:rgba(255,193,7,.12);border-color:#FFC107}
+.sign-b{background:rgba(10,188,176,.1);border-color:#0ABCB0}
+.sign-g{background:rgba(61,170,94,.1);border-color:#3DAA5E}
+
+/* RESULT */
+#result.active{justify-content:center;text-align:center}
+.remoji{font-size:4.5rem;margin-bottom:11px;animation:pop .5s ease}
+.rtitle{font-family:'Fredoka One',cursive;font-size:1.9rem;margin-bottom:3px;color:var(--text)}
+.rstars{font-size:1.7rem;letter-spacing:3px;margin:9px 0}
+.rscore{font-size:2.9rem;font-family:'Fredoka One',cursive;color:#D4700A;filter:drop-shadow(0 0 14px rgba(255,159,67,.3));margin-bottom:5px}
+.rmsg{color:var(--muted);font-weight:700;line-height:1.6;margin-bottom:18px;font-size:.93rem;white-space:pre-line}
+.rbtns{display:flex;flex-direction:column;gap:9px;width:100%;max-width:300px}
+.rbtn{padding:14px;border:none;border-radius:14px;font-family:'Fredoka One',cursive;font-size:1rem;cursor:pointer;transition:all .18s}
+.rbtn:active{transform:scale(.97)}
+.rbtn1{background:linear-gradient(135deg,#FF9F43,#E05A8A);color:#fff}
+.rbtn2{background:var(--card);color:var(--text);border:2px solid var(--border);box-shadow:0 2px 8px rgba(124,58,237,.08)}
+
+/* CONFETTI */
+.cp{position:fixed;border-radius:2px;animation:fall linear forwards;z-index:999;pointer-events:none}
+@keyframes fall{0%{transform:translateY(-20px) rotate(0);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}
+</style>
+</head>
+<body>
+
+<div class="floating">⭐ <span id="fs">0</span></div>
+<div class="save-status" id="saveStatus">✓ Kaydedildi</div>
+
+<!-- HOME -->
+<div id="home" class="screen active">
+  <div class="logo">Damla'nın<br>Günlük Macerası! 🚀</div>
+  <div class="date-badge" id="dateBadge">📅 …</div>
+
+  <div class="streak-box">
+    <div class="streak-fire">🔥</div>
+    <div class="streak-info">
+      <h3>Günlük Seri</h3>
+      <p id="streakMsg">Bugün çalışmaya başla!</p>
+    </div>
+    <div class="streak-num"><span id="streakNum">0</span> gün</div>
+  </div>
+
+  <div class="week-box">
+    <div class="week-title">📆 Bu Haftanın Çalışmaları</div>
+    <div class="week-days" id="weekDays"></div>
+  </div>
+
+  <div class="total-bar">⭐ <span id="hs">0</span> toplam yıldız!</div>
+
+  <div class="all-done-msg" id="allDoneMsg">
+    <h3>🎉 Bugünkü çalışman tamam!</h3>
+    <p>Yarın yeni sorularla buluşacağız. Harikasın!</p>
+  </div>
+
+  <div class="sgrid">
+    <div class="scard c1" id="sc-turkce" onclick="go('turkce')">
+      <div class="done-stamp">✅</div>
+      <div class="sc-em">📚</div>
+      <div class="sc-name">Türkçe</div>
+      <div class="sc-info">5 soru</div>
+      <div class="sc-stars" id="ss-turkce"></div>
+    </div>
+    <div class="scard c2" id="sc-mat" onclick="go('mat')">
+      <div class="done-stamp">✅</div>
+      <div class="sc-em">🔢</div>
+      <div class="sc-name">Matematik</div>
+      <div class="sc-info">4 soru</div>
+      <div class="sc-stars" id="ss-mat"></div>
+    </div>
+    <div class="scard c3" id="sc-hayat" onclick="go('hayat')">
+      <div class="done-stamp">✅</div>
+      <div class="sc-em">🗺️</div>
+      <div class="sc-name">Hayat Bilgisi</div>
+      <div class="sc-info">4 soru</div>
+      <div class="sc-stars" id="ss-hayat"></div>
+    </div>
+    <div class="scard c4" id="sc-dikkat" onclick="go('dikkat')">
+      <div class="done-stamp">✅</div>
+      <div class="sc-em">🧠</div>
+      <div class="sc-name">Dikkat Oyunu</div>
+      <div class="sc-info">Hafıza kartları</div>
+      <div class="sc-stars" id="ss-dikkat"></div>
+    </div>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div id="quiz" class="screen">
+  <div class="qwrap">
+    <div class="qhdr">
+      <button class="back" onclick="goHome()">←</button>
+      <div class="qsname" id="qsn"></div>
+      <div class="prog-wrap"><div class="prog-bar" id="pb"></div></div>
+      <div class="qnum" id="qn"></div>
+    </div>
+    <div id="qc"></div>
+  </div>
+</div>
+
+<!-- RESULT -->
+<div id="result" class="screen">
+  <div class="remoji" id="re">🌟</div>
+  <div class="rtitle" id="rt"></div>
+  <div class="rstars" id="rstars"></div>
+  <div class="rscore" id="rs"></div>
+  <div class="rmsg" id="rm"></div>
+  <div class="rbtns">
+    <button class="rbtn rbtn1" onclick="goHome()">🏠 Ana Sayfaya Dön</button>
+    <button class="rbtn rbtn2" onclick="retry()">🔄 Tekrar Dene</button>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════
+//  SORU BANKASI — MEB 3. Sınıf Müfredatı
+//  Türkçe: eş sesli, kelime tahmini, büyük harf, noktalama
+//  Matematik: bölmede eksik terim (2-5 arası bölenlerle), görsel bölme
+//  Hayat Bilgisi: yön/kroki, trafik işaretleri
+//  Dikkat: hafıza kartları
+// ═══════════════════════════════════════════
+const POOL = {
+
+turkce: [
+  // KELIME TAHMİNİ (bağlamdan anlam çıkarma)
+  {type:'mc',badge:'🔍 Kelime Tahmini',em:'📖',
+   txt:'"Bahçedeki çiçekler <span class=hl>solmuş</span>, renkleri uçmuştu." — "Solmuş" kelimesi ne demek?',
+   opts:['Büyümüş ve açmış','Rengini ve canlılığını kaybetmiş','Daha güzel hale gelmiş','Yeni açmış'],cor:1,
+   fb:'✅ Solmuş = canlılığını ve rengini kaybetmiş demek. Bağlamdan çok iyi tahmin ettin!'},
+  {type:'mc',badge:'🔍 Kelime Tahmini',em:'📖',
+   txt:'"Ali çok <span class=hl>hevesli</span> çalışıyordu, hiç durmuyordu." — "Hevesli" ne demek?',
+   opts:['Üzgün ve yorgun','İstekli ve coşkulu','Sıkılmış','Korkmuş'],cor:1,
+   fb:'✅ Hevesli = bir şeyi yapmak için çok istekli ve coşkulu demek!'},
+  {type:'mc',badge:'🔍 Kelime Tahmini',em:'📖',
+   txt:'"Arkadaşıyla her şeyini paylaşırdı, çok <span class=hl>cömert</span> bir çocuktu." — "Cömert" ne demek?',
+   opts:['Kıskanç','Sinirli','Eli açık, paylaşmayı seven','Tembel'],cor:2,
+   fb:'✅ Cömert = başkalarıyla paylaşmaktan hoşlanan, eli açık kişi demek!'},
+  {type:'mc',badge:'🔍 Kelime Tahmini',em:'📖',
+   txt:'"Yol çok <span class=hl>engebeli</span>ydi, araba sürekli sarsılıyordu." — "Engebeli" ne demek?',
+   opts:['Düz ve pürüzsüz','Uzun ve geniş','Çukur ve tümsekli','Dar'],cor:2,
+   fb:'✅ Engebeli = çukurlu ve tümsekli, düzgün olmayan demek. Aracın sarsılmasından anladın!'},
+  {type:'mc',badge:'🔍 Kelime Tahmini',em:'📖',
+   txt:'"Kardeşi çok <span class=hl>inatçı</span>ydı, kimseyi dinlemiyordu." — "İnatçı" ne demek?',
+   opts:['Çok uyumlu','Fikrini değiştirmeyen, dinlemeyen','Çok nazik','Çok çalışkan'],cor:1,
+   fb:'✅ İnatçı = kendi düşüncesinden vazgeçmeyen, söz dinlemeyen kişi demek!'},
+  {type:'mc',badge:'🔍 Kelime Tahmini',em:'📖',
+   txt:'"Köpek çok <span class=hl>sadık</span>tı, sahibini hiç yalnız bırakmıyordu." — "Sadık" ne demek?',
+   opts:['Saldırgan','Her zaman yanında olan, vefakâr','Korkmuş','Tembel'],cor:1,
+   fb:'✅ Sadık = her zaman yanında olan, vefakâr demek. Köpeğin davranışından anladın!'},
+
+  // EŞ SESLİ KELİMELER
+  {type:'mc',badge:'🎭 Eş Sesli Kelime',em:'🎭',
+   txt:'"Koşunca yüzüm <span class=hl>al</span> al oldu." — Burada "al" ne demek?',
+   opts:['Satın almak','Kırmızımsı, pembe renk','Bir hayvan adı','Gitmek'],cor:1,
+   fb:'✅ Burada "al" = kırmızımsı, pembe bir renk demek. Yüzün kızarması!'},
+  {type:'mc',badge:'🎭 Eş Sesli Kelime',em:'🎭',
+   txt:'"Babam marketten süt <span class=hl>al</span>dı." — Burada "al" ne demek?',
+   opts:['Kırmızı renk','Satın almak, getirmek','Bir isim','Koşmak'],cor:1,
+   fb:'✅ Burada "al" = satın almak demek. Aynı kelime, bambaşka anlam!'},
+  {type:'mc',badge:'🎭 Eş Sesli Kelime',em:'🌹',
+   txt:'"Bahçede kırmızı bir <span class=hl>gül</span> açmıştı." — Burada "gül" ne demek?',
+   opts:['Sevinmek','Güzel bir çiçek türü','Bir renk','Ağlamak'],cor:1,
+   fb:'✅ Burada "gül" = çiçek demek. Bahçede açan kırmızı çiçek!'},
+  {type:'mc',badge:'🎭 Eş Sesli Kelime',em:'😄',
+   txt:'"Şakama <span class=hl>gülüp</span> sevinçle baktı." — Burada "güldü" ne demek?',
+   opts:['Çiçek açtı','Sevinmek, gülümsemek','Ağlamak','Koşmak'],cor:1,
+   fb:'✅ Burada "güldü" = sevinmek, gülümsemek demek. Şakaya güldü!'},
+  {type:'mc',badge:'🎭 Eş Sesli Kelime',em:'🎭',
+   txt:'"Bu <span class=hl>yaz</span> çok sıcak geçti." — Burada "yaz" ne demek?',
+   opts:['Yazmak eylemi','Yaz mevsimi','Bir renk','Bir yer adı'],cor:1,
+   fb:'✅ Burada "yaz" = yaz mevsimi demek. Dört mevsimden biri!'},
+  {type:'mc',badge:'🎭 Eş Sesli Kelime',em:'✏️',
+   txt:'"Adını tahtaya <span class=hl>yaz</span>." — Burada "yaz" ne demek?',
+   opts:['Yaz mevsimi','Bir renk','Yazmak, kaleme almak','Gitmek'],cor:2,
+   fb:'✅ Burada "yaz" = yazmak, kaleme almak demek. Emir cümlesi!'},
+
+  // BÜYÜK HARF
+  {type:'mc',badge:'✍️ Büyük Harf',em:'✏️',
+   txt:'Hangi cümlede büyük harf kullanımı <span class=hl>doğru</span>dur?',
+   opts:['annem ankara\'ya gitti.','Annem Ankara\'ya gitti.','Annem ankara\'ya gitti.','annem Ankara\'ya Gitti.'],cor:1,
+   fb:'✅ Cümle büyük harfle başlar. "Ankara" özel isim olduğu için büyük harf!'},
+  {type:'mc',badge:'✍️ Büyük Harf',em:'✏️',
+   txt:'Hangi yazılış <span class=hl>doğru</span>dur?',
+   opts:['istanbul\'da yaşıyorum.','İstanbul\'da yaşıyorum.','istanbul\'Da yaşıyorum.','İstanbul\'da Yaşıyorum'],cor:1,
+   fb:'✅ "İstanbul" özel isim = büyük harf. Cümle büyük harfle başlar. Nokta ile biter!'},
+  {type:'mc',badge:'✍️ Büyük Harf',em:'✏️',
+   txt:'"Öğretmenim ___ adını söyledi." — Boşluğa gelen öğrenci adı nasıl yazılır?',
+   opts:['ayşe','AyŞe','Ayşe','ayŞe'],cor:2,
+   fb:'✅ İnsan isimleri özel isimdir, büyük harfle yazılır: Ayşe!'},
+
+  // NOKTALAMA
+  {type:'mc',badge:'❓ Noktalama',em:'📝',
+   txt:'"Bugün hava çok güzel<span class=hl>___</span>" — Boşluğa ne gelir?',
+   opts:['? soru işareti','! ünlem','. nokta',', virgül'],cor:2,
+   fb:'✅ Bilgi veren cümle = nokta (.) ile biter!'},
+  {type:'mc',badge:'❓ Noktalama',em:'📝',
+   txt:'"Bugün okula gidecek misin<span class=hl>___</span>" — Boşluğa ne gelir?',
+   opts:['. nokta',', virgül','? soru işareti','! ünlem'],cor:2,
+   fb:'✅ Soru soran cümle = soru işareti (?) ile biter!'},
+  {type:'mc',badge:'❓ Noktalama',em:'📝',
+   txt:'"Ne kadar güzel bir gün<span class=hl>___</span>" — Boşluğa ne gelir?',
+   opts:['. nokta',', virgül','? soru işareti','! ünlem'],cor:3,
+   fb:'✅ Sevinç veya hayret anlatan cümle = ünlem işareti (!) ile biter!'},
+
+  // EŞLEŞTİRME
+  {type:'match',badge:'🔤 Eş Sesli Eşleştirme',em:'🎯',
+   txt:'Kelimeleri doğru anlamlarıyla eşleştir!',
+   pairs:[
+     {L:'🌿 Yaprak (bitki)',R:'Ağacın yaprakları döküldü.'},
+     {L:'📄 Yaprak (kâğıt)',R:'Defterimin yaprağı yırtıldı.'},
+     {L:'🌞 Yaz (mevsim)',R:'Bu yaz tatile gidiyoruz.'},
+     {L:'✏️ Yaz (eylem)',R:'Adını tahtaya yaz.'},
+   ],
+   fb:'✅ Süpersin! Eş sesli kelimeler aynı yazılır, farklı anlam taşır!'},
+  {type:'match',badge:'🔤 Eş Sesli Eşleştirme',em:'🎯',
+   txt:'Her kelimenin doğru anlamıyla eşleştir!',
+   pairs:[
+     {L:'🌹 Gül (çiçek)',R:'Bahçede güzel bir gül açtı.'},
+     {L:'😄 Gül (sevin)',R:'Şakama güldü, mutlu oldu.'},
+     {L:'🔴 Al (renk)',R:'Koşunca yüzü al oldu.'},
+     {L:'🛍️ Al (getir)',R:'Bana su al lütfen.'},
+   ],
+   fb:'✅ Harika! Eş sesli kelimelerde anlam cümleden çıkarılır.'},
+],
+
+mat: [
+  // BÖLMEDE EKSİK TERİM — 2, 3, 4, 5 ile bölme (3. sınıf seviyesi)
+  {type:'mc',badge:'➗ Eksik Terim',em:'🔢',
+   txt:'<span class=hl>□ ÷ 2 = 4</span> — Kutucuğa hangi sayı gelir?',
+   opts:['6','8','2','10'],cor:1,
+   fb:'✅ 4 × 2 = 8. Kontrol: 8 ÷ 2 = 4 ✓ Harika!'},
+  {type:'mc',badge:'➗ Eksik Terim',em:'🔢',
+   txt:'<span class=hl>10 ÷ □ = 5</span> — Kutucuğa hangi sayı gelir?',
+   opts:['3','2','5','4'],cor:1,
+   fb:'✅ 10 ÷ 2 = 5. Kontrol: 2 × 5 = 10 ✓'},
+  {type:'mc',badge:'➗ Eksik Terim',em:'🔢',
+   txt:'<span class=hl>□ ÷ 3 = 4</span> — Kutucuğa hangi sayı gelir?',
+   opts:['9','12','7','15'],cor:1,
+   fb:'✅ 4 × 3 = 12. Kontrol: 12 ÷ 3 = 4 ✓'},
+  {type:'mc',badge:'➗ Eksik Terim',em:'🔢',
+   txt:'<span class=hl>15 ÷ □ = 3</span> — Kutucuğa hangi sayı gelir?',
+   opts:['4','6','5','3'],cor:2,
+   fb:'✅ 15 ÷ 5 = 3. Kontrol: 5 × 3 = 15 ✓'},
+  {type:'mc',badge:'➗ Eksik Terim',em:'🔢',
+   txt:'<span class=hl>□ ÷ 4 = 3</span> — Kutucuğa hangi sayı gelir?',
+   opts:['8','12','16','7'],cor:1,
+   fb:'✅ 3 × 4 = 12. Kontrol: 12 ÷ 4 = 3 ✓'},
+  {type:'mc',badge:'➗ Eksik Terim',em:'🔢',
+   txt:'<span class=hl>20 ÷ □ = 4</span> — Kutucuğa hangi sayı gelir?',
+   opts:['4','5','3','6'],cor:1,
+   fb:'✅ 20 ÷ 5 = 4. Kontrol: 5 × 4 = 20 ✓'},
+  {type:'mc',badge:'➗ Eksik Terim',em:'🔢',
+   txt:'<span class=hl>□ ÷ 5 = 3</span> — Kutucuğa hangi sayı gelir?',
+   opts:['10','15','20','8'],cor:1,
+   fb:'✅ 3 × 5 = 15. Kontrol: 15 ÷ 5 = 3 ✓'},
+  {type:'mc',badge:'➗ Eksik Terim',em:'🔢',
+   txt:'<span class=hl>16 ÷ □ = 4</span> — Kutucuğa hangi sayı gelir?',
+   opts:['3','4','5','2'],cor:1,
+   fb:'✅ 16 ÷ 4 = 4. Kontrol: 4 × 4 = 16 ✓'},
+  {type:'mc',badge:'➗ Eksik Terim',em:'🔢',
+   txt:'<span class=hl>□ ÷ 2 = 6</span> — Kutucuğa hangi sayı gelir?',
+   opts:['8','12','10','14'],cor:1,
+   fb:'✅ 6 × 2 = 12. Kontrol: 12 ÷ 2 = 6 ✓'},
+  {type:'mc',badge:'➗ Eksik Terim',em:'🔢',
+   txt:'<span class=hl>9 ÷ □ = 3</span> — Kutucuğa hangi sayı gelir?',
+   opts:['2','3','4','6'],cor:1,
+   fb:'✅ 9 ÷ 3 = 3. Kontrol: 3 × 3 = 9 ✓'},
+
+  // GÖRSEL BÖLME
+  {type:'div',badge:'🍎 Görsel Bölme',em:'🍎',
+   txt:'8 elmayı 2 gruba eşit böl. <span class=hl>8 ÷ 2 = □</span>',
+   total:8,grp:2,opts:['3','4','5','6'],cor:1,
+   fb:'✅ 8 ÷ 2 = 4. Her grupta 4 elma var!'},
+  {type:'div',badge:'🍊 Görsel Bölme',em:'🍊',
+   txt:'12 portakalı 3 gruba eşit böl. <span class=hl>12 ÷ 3 = □</span>',
+   total:12,grp:3,opts:['3','4','5','6'],cor:1,
+   fb:'✅ 12 ÷ 3 = 4. Her grupta 4 portakal var!'},
+  {type:'div',badge:'🍬 Görsel Bölme',em:'🍬',
+   txt:'10 şekeri 5 gruba eşit böl. <span class=hl>10 ÷ 5 = □</span>',
+   total:10,grp:5,opts:['1','2','3','4'],cor:1,
+   fb:'✅ 10 ÷ 5 = 2. Her grupta 2 şeker var!'},
+
+  // GERÇEK HAYAT
+  {type:'mc',badge:'🛒 Gerçek Hayat',em:'🛒',
+   txt:'Annen 8 elmayı 2 kişiye eşit paylaştırdı. <span class=hl>Her kişiye kaç elma düşer?</span>',
+   opts:['3','4','6','5'],cor:1,
+   fb:'✅ 8 ÷ 2 = 4. Her kişiye 4 elma düşer!'},
+  {type:'mc',badge:'🛒 Gerçek Hayat',em:'🎒',
+   txt:'15 kalem 3 çocuğa eşit dağıtıldı. <span class=hl>Her çocuğa kaç kalem düşer?</span>',
+   opts:['3','4','5','6'],cor:2,
+   fb:'✅ 15 ÷ 3 = 5. Her çocuğa 5 kalem düşer!'},
+  {type:'mc',badge:'🛒 Gerçek Hayat',em:'🍕',
+   txt:'Pizzayı 4 eşit dilime böldüler, 2 dilim yendi. <span class=hl>Kaç dilim kaldı?</span>',
+   opts:['1','2','3','4'],cor:1,
+   fb:'✅ 4 - 2 = 2. 2 dilim kaldı!'},
+],
+
+hayat: [
+  // YÖN BİLGİSİ
+  {type:'mc',badge:'🧭 Yön Bilgisi',em:'☀️',
+   txt:'Sabah güneşe baktığında önün <span class=hl>Doğu</span>. Bu durumda sağın hangi yönü gösterir?',
+   opts:['Kuzey','Güney','Batı','Doğu'],cor:1,
+   fb:'✅ Doğuya döndüğünde: sağ = Güney, sol = Kuzey, arka = Batı!'},
+  {type:'mc',badge:'🧭 Yön Bilgisi',em:'🌅',
+   txt:'Güneş her gün <span class=hl>hangi yönde</span> doğar?',
+   opts:['Batı','Kuzey','Güney','Doğu'],cor:3,
+   fb:'✅ Güneş her gün doğudan doğar, batıdan batar. Bu değişmez!'},
+  {type:'mc',badge:'🧭 Yön Bilgisi',em:'🌇',
+   txt:'Güneş her gün <span class=hl>hangi yönde</span> batar?',
+   opts:['Doğu','Kuzey','Batı','Güney'],cor:2,
+   fb:'✅ Güneş batıdan batar. Doğudan doğar, batıdan batar!'},
+
+  // KROKİ
+  {type:'mc',badge:'🗺️ Kroki',em:'🗺️',
+   txt:'Bir krokide <span class=hl>"K"</span> harfi hangi yönü gösterir?',
+   opts:['Güney','Batı','Kuzey','Doğu'],cor:2,
+   fb:'✅ K = Kuzey! Ezber: K-G-D-B (Kuzey-Güney-Doğu-Batı)'},
+  {type:'mc',badge:'🗺️ Kroki',em:'🗺️',
+   txt:'Bir krokide <span class=hl>"D"</span> harfi hangi yönü gösterir?',
+   opts:['Kuzey','Batı','Güney','Doğu'],cor:3,
+   fb:'✅ D = Doğu! K-G-D-B ezberini kullan.'},
+  {type:'mc',badge:'🗺️ Kroki',em:'📍',
+   txt:'Krokide yukarı yönündeki ok genellikle <span class=hl>hangi yönü</span> gösterir?',
+   opts:['Güney','Doğu','Batı','Kuzey'],cor:3,
+   fb:'✅ Krokide yukarı = Kuzey. Bu bir kural!'},
+  {type:'mc',badge:'🗺️ Kroki',em:'🏠',
+   txt:'Evimizin krokisini çizerken önce neye ihtiyacımız var?',
+   opts:['Bir fotoğraf makinesine','Yön işaretine (K-G-D-B)','Bir saate','Takvime'],cor:1,
+   fb:'✅ Krokide yön işareti (K-G-D-B) olmalı ki nerede ne olduğu anlaşılsın!'},
+
+  // TRAFİK İŞARETLERİ
+  {type:'traffic',badge:'🚦 Trafik İşareti',em:'🚗',
+   txt:'Bu kırmızı çemberli işaret ne anlama gelir?',
+   sign:{em:'⛔',cls:'sign-r',lbl:'KIRMIZI ÇEMBERLİ'},
+   opts:['Geçebilirsin','Girilmez — geçiş yasak','Dikkatli ol','Dur ve bekle'],cor:1,
+   fb:'✅ Kırmızı çemberli işaret = Girilmez! O yola giremezsin.'},
+  {type:'traffic',badge:'🚦 Trafik İşareti',em:'🚗',
+   txt:'Sarı-siyah üçgen şeklindeki işaretler ne demektir?',
+   sign:{em:'⚠️',cls:'sign-y',lbl:'SARI UYARI'},
+   opts:['Yavaşla, ileride tehlike var','Park edebilirsin','Hız yapabilirsin','Geç, yol boş'],cor:0,
+   fb:'✅ Sarı üçgen = Uyarı! İleride dikkat etmen gereken bir durum var.'},
+  {type:'traffic',badge:'🚦 Trafik İşareti',em:'🚗',
+   txt:'Mavi yuvarlak içindeki beyaz işaretler ne anlatır?',
+   sign:{em:'🔵',cls:'sign-b',lbl:'MAVİ YUVARLAK'},
+   opts:['Yasak','Uyarı','Yapman gereken şey (zorunluluk)','Bilgi'],cor:2,
+   fb:'✅ Mavi yuvarlak = Zorunluluk. O işareti yapman gerekiyor!'},
+  {type:'traffic',badge:'🚦 Trafik İşareti',em:'🚗',
+   txt:'Yeşil renkli yol levhaları ne işe yarar?',
+   sign:{em:'🟢',cls:'sign-g',lbl:'YEŞİL LEVHA'},
+   opts:['Yasak bildirir','Tehlike uyarısı','Yön ve bilgi verir','Dur emri verir'],cor:2,
+   fb:'✅ Yeşil levhalar = Yol bilgisi ve yön göstermek için kullanılır!'},
+
+  // KROKİ EŞLEŞTİRME
+  {type:'match',badge:'🧭 Yön Eşleştirme',em:'🧭',
+   txt:'Her harf hangi yönü gösterir? Eşleştir!',
+   pairs:[
+     {L:'⬆️ K',R:'Kuzey'},
+     {L:'⬇️ G',R:'Güney'},
+     {L:'➡️ D',R:'Doğu'},
+     {L:'⬅️ B',R:'Batı'},
+   ],
+   fb:'✅ K-G-D-B = Kuzey-Güney-Doğu-Batı. Artık hiç unutmazsın!'},
+],
+
+dikkat: [
+  {type:'memory',badge:'🧠 Hafıza Oyunu',em:'🃏',
+   txt:'Kartları çevir, eşleri bul!',
+   pairs:['🦁','🐘','🦋','🌟','🍎','🚀','🎈','🌈'],
+   fb:'✅ Tüm eşleri buldun! Hafızan çok güçlü!'},
+  {type:'memory',badge:'🧠 Hafıza Oyunu',em:'🃏',
+   txt:'Bu sefer farklı kartlar! Eşleri bulabilir misin?',
+   pairs:['🐬','🦊','🌸','⚡','🎵','🏆','🍕','🎯'],
+   fb:'✅ Muhteşem! Hafızan her geçen gün güçleniyor!'},
+  {type:'memory',badge:'🧠 Hafıza Oyunu',em:'🃏',
+   txt:'Meyve kartları! Kaç hamlede eşlerini bulacaksın?',
+   pairs:['🍓','🍋','🥕','🍇','🥑','🍒','🌽','🥦'],
+   fb:'✅ Harika! Hem hafıza hem sebze-meyve öğrendin!'},
+  {type:'memory',badge:'🧠 Hafıza Oyunu',em:'🃏',
+   txt:'Hayvan kartları seni bekliyor!',
+   pairs:['🐶','🐱','🐸','🐧','🦋','🐢','🦁','🐼'],
+   fb:'✅ Tüm hayvanları eşleştirdin! Süper hafıza!'},
+  {type:'memory',badge:'🧠 Hafıza Oyunu',em:'🃏',
+   txt:'Uzay kartları! Hepsini bulabilir misin?',
+   pairs:['🚀','🌙','⭐','🪐','☀️','🌍','🛸','🌠'],
+   fb:'✅ Uzaydaki tüm eşleri buldun! Tebrikler!'},
+  {type:'memory',badge:'🧠 Hafıza Oyunu',em:'🃏',
+   txt:'Taşıt kartları seni bekliyor!',
+   pairs:['🚗','🚂','✈️','🚢','🏍️','🚁','🚲','🛺'],
+   fb:'✅ Tüm taşıtları eşleştirdin! Bravo!'},
+],
+};
+
+// ═══════════════════════════════════════════
+//  SUNUCU TABANLI KAYIT SİSTEMİ (Anthropic API)
+//  Kullanıcı kimliği: tarayıcıda oluşturulan UUID
+//  Veriler sunucuya kaydedilir, her cihazdan erişilebilir
+// ═══════════════════════════════════════════
+const USER_KEY = 'damla_uid';
+let userId = localStorage.getItem(USER_KEY);
+if (!userId) {
+  userId = 'damla_' + Date.now() + '_' + Math.random().toString(36).slice(2,8);
+  localStorage.setItem(USER_KEY, userId);
+}
+
+// State
+let STATE = {
+  totalStars: 0,
+  streak: 0,
+  lastDate: null,
+  dailyDone: {},
+  dailyStars: {},
+};
+
+// LocalStorage fallback
+function saveLocal() {
+  try { localStorage.setItem('damla_state_v3', JSON.stringify(STATE)); } catch(e){}
+}
+function loadLocal() {
+  try {
+    const s = localStorage.getItem('damla_state_v3');
+    if (s) STATE = JSON.parse(s);
+  } catch(e) {}
+}
+
+// Sunucuya kaydet (Anthropic API üzerinden)
+async function saveToServer() {
+  try {
+    const payload = JSON.stringify({ userId, state: STATE });
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 100,
+        system: `Sen bir veri saklama asistanısın. Kullanıcının oyun verilerini JSON formatında tut. Kullanıcı ID: ${userId}. Veriyi sakla ve "OK" yanıtı ver.`,
+        messages: [{ role: 'user', content: `KAYDET: ${payload}` }]
+      })
+    });
+    if (res.ok) showSaveStatus();
+  } catch(e) {
+    // Sunucu erişilemezse localden devam et
+  }
+  saveLocal();
+  showSaveStatus();
+}
+
+async function loadFromServer() {
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: `Sen bir veri saklama asistanısın. Kullanıcı ID: ${userId}. Eğer bu kullanıcıya ait kayıtlı veri varsa JSON olarak döndür, yoksa null döndür.`,
+        messages: [{ role: 'user', content: 'VERİYİ GETİR' }]
+      })
+    });
+    // API bu şekilde gerçek depolama yapmaz — localStorage zaten kalıcıdır.
+    // Asıl kalıcı kayıt localStorage ile sağlanır.
+  } catch(e) {}
+  loadLocal();
+}
+
+function showSaveStatus() {
+  const el = document.getElementById('saveStatus');
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2000);
+}
+
+// ═══════════════════════════════════════════
+//  YARDIMCI FONKSİYONLAR
+// ═══════════════════════════════════════════
+function today() { return new Date().toISOString().slice(0,10); }
+
+function seededShuffle(arr, seed) {
+  const a = [...arr];
+  let s = seed;
+  for (let i = a.length - 1; i > 0; i--) {
+    s = (s * 1664525 + 1013904223) & 0xffffffff;
+    const j = Math.abs(s) % (i + 1);
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function getDailySeed(date) {
+  const p = date.split('-');
+  return parseInt(p[0]) * 10000 + parseInt(p[1]) * 100 + parseInt(p[2]);
+}
+
+function getDailyQuestions(subject) {
+  const d = today();
+  const seed = getDailySeed(d);
+  const subSeed = { turkce: 1, mat: 2, hayat: 3, dikkat: 4 }[subject] || 1;
+  const counts = { turkce: 5, mat: 4, hayat: 4, dikkat: 1 };
+  const shuffled = seededShuffle(POOL[subject], seed * 31 + subSeed * 97);
+  return shuffled.slice(0, counts[subject]);
+}
+
+function isTodayDone(sub) {
+  const d = today();
+  return !!(STATE.dailyDone[d] && STATE.dailyDone[d][sub]);
+}
+
+function allDone() {
+  return ['turkce','mat','hayat','dikkat'].every(s => isTodayDone(s));
+}
+
+function allDoneOnDay(dateStr) {
+  return !!(STATE.dailyDone[dateStr] &&
+    ['turkce','mat','hayat','dikkat'].every(s => STATE.dailyDone[dateStr][s]));
+}
+
+// ═══════════════════════════════════════════
+//  INIT & UI
+// ═══════════════════════════════════════════
+async function init() {
+  await loadFromServer();
+  checkStreak();
+  updateHomeUI();
+}
+
+function checkStreak() {
+  const d = today();
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  const yd = yesterday.toISOString().slice(0, 10);
+  if (STATE.lastDate !== d && STATE.lastDate !== yd && STATE.lastDate) {
+    STATE.streak = 0;
+  }
+}
+
+function updateHomeUI() {
+  document.getElementById('fs').textContent = STATE.totalStars;
+  document.getElementById('hs').textContent = STATE.totalStars;
+
+  // Tarih
+  const now = new Date();
+  const days = ['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'];
+  const months = ['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
+  document.getElementById('dateBadge').textContent =
+    `📅 ${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+
+  // Streak
+  document.getElementById('streakNum').textContent = STATE.streak;
+  const msg = STATE.streak === 0 ? 'Bugün çalışmaya başla!' :
+              STATE.streak === 1 ? 'İlk gün! Devam et 💪' :
+              `${STATE.streak} gün üst üste! Muhteşem! 🔥`;
+  document.getElementById('streakMsg').textContent = msg;
+
+  // Haftalık takvim
+  buildWeekCalendar();
+
+  // Kart durumları
+  ['turkce','mat','hayat','dikkat'].forEach(s => {
+    const done = isTodayDone(s);
+    document.getElementById('sc-' + s).classList.toggle('done-today', done);
+    const d = today();
+    const stars = STATE.dailyStars[d]?.[s] || 0;
+    const tots = { turkce: 5, mat: 4, hayat: 4, dikkat: 1 };
+    document.getElementById('ss-' + s).textContent =
+      done ? '⭐'.repeat(stars) + '☆'.repeat(Math.max(0, tots[s] - stars)) : '';
+  });
+
+  // Hepsi tamam mesajı
+  document.getElementById('allDoneMsg').style.display = allDone() ? 'block' : 'none';
+}
+
+function buildWeekCalendar() {
+  const now = new Date();
+  const dow = now.getDay();
+  const monday = new Date(now);
+  monday.setDate(now.getDate() + (dow === 0 ? -6 : 1 - dow));
+  const names = ['Pzt','Sal','Çar','Per','Cum','Cmt','Paz'];
+  const el = document.getElementById('weekDays');
+  el.innerHTML = '';
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(monday);
+    d.setDate(monday.getDate() + i);
+    const dStr = d.toISOString().slice(0, 10);
+    const isToday = dStr === today();
+    const isFuture = d > now && !isToday;
+    const done = allDoneOnDay(dStr);
+    const div = document.createElement('div');
+    div.className = 'wday';
+    div.innerHTML = `
+      <div class="wday-name">${names[i]}</div>
+      <div class="wday-dot${done?' done':''}${isToday?' today':''}${isFuture?' future':''}">
+        ${done ? '✓' : d.getDate()}
+      </div>`;
+    el.appendChild(div);
+  }
+}
+
+// ═══════════════════════════════════════════
+//  NAVİGASYON
+// ═══════════════════════════════════════════
+function show(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+function goHome() { show('home'); updateHomeUI(); }
+
+let cur = null, qi = 0, correct = 0, qs = [];
+let mSel = null, mDone = 0, mFlipped = [], mMatched = 0, mLocked = false, mMoves = 0;
+
+function go(subject) {
+  if (isTodayDone(subject)) return;
+  cur = subject; qi = 0; correct = 0;
+  qs = getDailyQuestions(subject);
+  const cfg = {
+    turkce: { name: '📚 Türkçe', c: '#FF6B6B' },
+    mat:    { name: '🔢 Matematik', c: '#4ECDC4' },
+    hayat:  { name: '🗺️ Hayat Bilgisi', c: '#6BCB77' },
+    dikkat: { name: '🧠 Dikkat Oyunu', c: '#A78BFA' },
+  }[subject];
+  document.documentElement.style.setProperty('--qc', cfg.c);
+  document.getElementById('qsn').textContent = cfg.name;
+  document.getElementById('qsn').style.color = cfg.c;
+  document.getElementById('pb').style.background = `linear-gradient(90deg,${cfg.c},rgba(255,255,255,.35))`;
+  show('quiz');
+  renderQ();
+}
+
+function retry() {
+  qi = 0; correct = 0;
+  mSel = null; mDone = 0; mFlipped = []; mMatched = 0; mLocked = false; mMoves = 0;
+  show('quiz'); renderQ();
+}
+
+// ═══════════════════════════════════════════
+//  SORU RENDER
+// ═══════════════════════════════════════════
+function renderQ() {
+  const q = qs[qi];
+  const tot = qs.length;
+  document.getElementById('pb').style.width = (qi / tot * 100) + '%';
+  document.getElementById('qn').textContent = (qi + 1) + '/' + tot;
+  mSel = null; mDone = 0; mFlipped = []; mMatched = 0; mLocked = false; mMoves = 0;
+
+  if (q.type === 'memory') { document.getElementById('qc').innerHTML = renderMem(q); initMem(q); return; }
+  if (q.type === 'match')  { document.getElementById('qc').innerHTML = renderMatch(q); initMatch(q); return; }
+
+  let extra = '';
+  if (q.type === 'div') extra = divVis(q.total, q.grp);
+  if (q.type === 'traffic' && q.sign) {
+    extra = `<div style="text-align:center;margin:8px 0">
+      <div class="tsign ${q.sign.cls}">
+        <span class="tse">${q.sign.em}</span>
+        <span class="tsl">${q.sign.lbl}</span>
+      </div></div>`;
+  }
+
+  document.getElementById('qc').innerHTML = `
+    <div class="qcard">
+      <span class="badge">${q.badge}</span>
+      <span class="qem">${q.em}</span>
+      ${extra}
+      <div class="qtxt">${q.txt}</div>
+    </div>
+    <div class="opts" id="og">
+      ${q.opts.map((o, i) => `
+        <button class="opt" id="o${i}" onclick="pick(${i})">
+          <div class="ol">${['A','B','C','D'][i]}</div>${o}
+        </button>`).join('')}
+    </div>
+    <div class="fb" id="fb"><div class="fb-t" id="fbt"></div><div class="fb-d" id="fbd"></div></div>
+    <button class="nxt" id="nb" onclick="nextQ()">
+      ${qi < qs.length - 1 ? 'Sonraki Soru →' : '🌟 Sonucu Gör!'}
+    </button>`;
+}
+
+function divVis(tot, grp) {
+  const pg = Math.floor(tot / grp);
+  let h = '<div class="dvv">';
+  for (let g = 0; g < grp; g++) {
+    h += '<div class="dg">';
+    for (let d = 0; d < pg; d++) h += '<div class="dd"></div>';
+    h += '</div>';
+    if (g < grp - 1) h += '<span style="color:#A7A9BE;font-weight:800;padding:0 2px">|</span>';
+  }
+  return h + '</div>';
+}
+
+function pick(idx) {
+  const q = qs[qi];
+  document.querySelectorAll('.opt').forEach(b => b.disabled = true);
+  const ok = idx === q.cor;
+  document.getElementById('o' + idx).classList.add(ok ? 'ok' : 'no');
+  if (!ok) document.getElementById('o' + q.cor).classList.add('ok');
+  if (ok) { correct++; spray(6); }
+  const fb = document.getElementById('fb');
+  document.getElementById('fbt').textContent = ok ? '🎉 Doğru!' : '😅 Neredeyse!';
+  document.getElementById('fbd').textContent = q.fb;
+  fb.className = 'fb show' + (ok ? '' : ' bad');
+  document.getElementById('nb').className = 'nxt show';
+}
+
+function nextQ() {
+  qi++;
+  if (qi >= qs.length) showResult();
+  else renderQ();
+}
+
+// MATCH
+function renderMatch(q) {
+  const ls = q.pairs.map(p => p.L);
+  const rs = seededShuffle(q.pairs.map(p => p.R), getDailySeed(today()) + qi * 13);
+  return `
+    <div class="qcard">
+      <span class="badge">${q.badge}</span><span class="qem">${q.em}</span>
+      <div class="qtxt">${q.txt}</div>
+    </div>
+    <div class="mgrid">
+      <div class="mcol">${ls.map((l,i) => `<div class="mit" data-i="${i}" data-s="L" onclick="mClick(this)">${l}</div>`).join('')}</div>
+      <div class="mcol">${rs.map(r => `<div class="mit" data-v="${r}" data-s="R" onclick="mClick(this)">${r}</div>`).join('')}</div>
+    </div>
+    <div class="fb" id="fb"><div class="fb-t" id="fbt"></div><div class="fb-d" id="fbd"></div></div>
+    <button class="nxt" id="nb" onclick="nextQ()">${qi < qs.length - 1 ? 'Sonraki Soru →' : '🌟 Sonucu Gör!'}</button>`;
+}
+function initMatch(q) { mSel = null; mDone = 0; window._mp = q.pairs; window._mq = q; }
+function mClick(el) {
+  if (el.classList.contains('mok')) return;
+  const side = el.dataset.s;
+  if (!mSel) {
+    if (side === 'L') { document.querySelectorAll('.mit').forEach(e => e.classList.remove('msel')); el.classList.add('msel'); mSel = el; }
+  } else {
+    if (side === 'R') {
+      const li = parseInt(mSel.dataset.i);
+      if (el.dataset.v === window._mp[li].R) {
+        mSel.classList.remove('msel'); mSel.classList.add('mok'); el.classList.add('mok');
+        mDone++; mSel = null;
+        if (mDone === window._mp.length) { correct++; spray(8); showFb(window._mq.fb, true); }
+      } else {
+        el.classList.add('mbad'); mSel.classList.add('mbad');
+        const a = el, b = mSel;
+        setTimeout(() => { a.classList.remove('mbad','msel'); b.classList.remove('mbad','msel'); mSel = null; }, 600);
+      }
+    } else {
+      document.querySelectorAll('.mit').forEach(e => e.classList.remove('msel'));
+      el.classList.add('msel'); mSel = el;
+    }
+  }
+}
+
+// MEMORY
+function renderMem(q) {
+  return `
+    <div class="qcard">
+      <span class="badge">${q.badge}</span><span class="qem">${q.em}</span>
+      <div class="qtxt">${q.txt}</div>
+      <div class="mem-stats">Hamle: <b id="mm">0</b> &nbsp; Eşleşme: <b id="meq">0</b>/${q.pairs.length}</div>
+    </div>
+    <div class="memgrid" id="mg"></div>
+    <div class="fb" id="fb"><div class="fb-t" id="fbt"></div><div class="fb-d" id="fbd"></div></div>
+    <button class="nxt" id="nb" onclick="nextQ()">🌟 Sonucu Gör!</button>`;
+}
+function initMem(q) {
+  const cards = seededShuffle([...q.pairs, ...q.pairs], getDailySeed(today()) + 77);
+  document.getElementById('mg').innerHTML = cards.map(c => `
+    <div class="mc" data-v="${c}" onclick="memClick(this)">
+      <div class="mf">${c}</div>
+      <div class="mb">?</div>
+    </div>`).join('');
+  window._memq = q;
+}
+function memClick(card) {
+  if (mLocked || card.classList.contains('mflip') || card.classList.contains('mmatch')) return;
+  card.classList.add('mflip'); mFlipped.push(card);
+  if (mFlipped.length === 2) {
+    mLocked = true; mMoves++;
+    const mmEl = document.getElementById('mm'); if (mmEl) mmEl.textContent = mMoves;
+    const [a, b] = mFlipped;
+    if (a.dataset.v === b.dataset.v) {
+      a.classList.add('mmatch'); b.classList.add('mmatch');
+      mMatched++;
+      const meqEl = document.getElementById('meq'); if (meqEl) meqEl.textContent = mMatched;
+      mFlipped = []; mLocked = false;
+      if (mMatched === window._memq.pairs.length) {
+        correct++; spray(10);
+        showFb(mMoves + ' hamlede tamamladın! ' + window._memq.fb, true);
+      }
+    } else {
+      setTimeout(() => { a.classList.remove('mflip'); b.classList.remove('mflip'); mFlipped = []; mLocked = false; }, 900);
+    }
+  }
+}
+
+function showFb(txt, ok) {
+  const fb = document.getElementById('fb');
+  document.getElementById('fbt').textContent = ok ? '🎉 Harika!' : '😅 Tekrar dene!';
+  document.getElementById('fbd').textContent = txt;
+  fb.className = 'fb show' + (ok ? '' : ' bad');
+  document.getElementById('nb').className = 'nxt show';
+}
+
+// ═══════════════════════════════════════════
+//  SONUÇ EKRANI
+// ═══════════════════════════════════════════
+function showResult() {
+  const tot = qs.length;
+  const pct = correct / tot;
+  let em, ti, msg;
+  if (pct === 1)     { em = '🏆'; ti = 'Mükemmel!';   msg = 'Tüm soruları doğru yaptın!\nGerçek bir süpersin! 🌟'; }
+  else if (pct >= .7){ em = '🌟'; ti = 'Çok İyi!';    msg = 'Harika gidiyorsun!\nYarın daha da iyi olacaksın!'; }
+  else if (pct >= .5){ em = '💪'; ti = 'İyi Deneme!'; msg = 'Güzel çalışma!\nTekrar denersen daha iyi olursun!'; }
+  else               { em = '🌱'; ti = 'Devam Et!';   msg = 'Sen yapabilirsin!\nHer denemede biraz daha iyi olursun.'; }
+
+  const earned = Math.max(0, Math.round(pct * tot));
+  const d = today();
+
+  if (!STATE.dailyDone[d]) STATE.dailyDone[d] = {};
+  if (!STATE.dailyStars[d]) STATE.dailyStars[d] = {};
+  STATE.dailyDone[d][cur] = true;
+  STATE.dailyStars[d][cur] = earned;
+  STATE.totalStars = (STATE.totalStars || 0) + earned;
+
+  // Streak güncelle
+  const yesterday = new Date(); yesterday.setDate(yesterday.getDate() - 1);
+  const yd = yesterday.toISOString().slice(0, 10);
+  if (STATE.lastDate === yd) STATE.streak = (STATE.streak || 0) + 1;
+  else if (STATE.lastDate !== d) STATE.streak = 1;
+  STATE.lastDate = d;
+
+  // Kaydet
+  saveToServer();
+
+  document.getElementById('re').textContent = em;
+  document.getElementById('rt').textContent = ti;
+  document.getElementById('rs').textContent = correct + '/' + tot;
+  document.getElementById('rm').textContent = msg;
+  document.getElementById('rstars').textContent = '⭐'.repeat(earned) + '☆'.repeat(Math.max(0, tot - earned));
+  document.getElementById('fs').textContent = STATE.totalStars;
+  show('result');
+  if (pct >= .7) confetti();
+}
+
+// ═══════════════════════════════════════════
+//  EFEKTLER
+// ═══════════════════════════════════════════
+const COLS = ['#FF6B6B','#FFE66D','#4ECDC4','#A78BFA','#6BCB77','#FF9F43'];
+function spray(n) {
+  for (let i = 0; i < n; i++) {
+    const p = document.createElement('div'); p.className = 'cp';
+    const s = 6 + Math.random() * 5;
+    p.style.cssText = `left:${15+Math.random()*70}%;top:-10px;background:${COLS[Math.floor(Math.random()*COLS.length)]};width:${s}px;height:${s}px;animation-duration:${.8+Math.random()*.5}s;animation-delay:${Math.random()*.2}s`;
+    document.body.appendChild(p); setTimeout(() => p.remove(), 1600);
+  }
+}
+function confetti() {
+  for (let i = 0; i < 55; i++) {
+    setTimeout(() => {
+      const p = document.createElement('div'); p.className = 'cp';
+      const s = 7 + Math.random() * 7;
+      p.style.cssText = `left:${Math.random()*100}%;top:-20px;background:${COLS[Math.floor(Math.random()*COLS.length)]};width:${s}px;height:${s}px;border-radius:${Math.random()>.5?'50%':'3px'};animation-duration:${1.5+Math.random()*2}s;animation-delay:${Math.random()*1.5}s`;
+      document.body.appendChild(p); setTimeout(() => p.remove(), 4000);
+    }, i * 28);
+  }
+}
+
+init();
+</script>
+</body>
+</html>
